@@ -17,11 +17,12 @@ def run(estimate,deadline,area,commandline):
     '''adds a process to the queue'''
     print(f"Input: estimate {estimate}, deadline {deadline}, area {area}, commandline {commandline}")
     print("Joke's on you this doesn't do anything.")
+    deadline_str = deadline.strftime("%Y-%m-%d %H:%M:%S") #wandelt click.DateTime in String um, weil click.DateTime nicht json kompatibel ist
     parameters = {
         "estimate": estimate,
+        "deadline": deadline_str,
         "area": area,
         "commandline": commandline
     }
-    #Problem mit Deadline weil format nicht json kompatibel ist
     write_params('datatransfer.json', parameters)
 
