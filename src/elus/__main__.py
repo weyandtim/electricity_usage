@@ -1,6 +1,7 @@
 #!usr/bin/env python3
 # Module containing the data transformation
 from datetime import date, datetime
+import json
 import click
 from commands import areas, queue, run, start, stop
 
