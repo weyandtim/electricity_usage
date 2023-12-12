@@ -1,21 +1,19 @@
 import requests
 import json
 
-#query verwendet den angegebenen zonekey, 
-#falls kein zonekey angegeben ist wird automatisch der zonekey der IP adresse verwendet  
-url = "https://api-access.electricitymaps.com/free-tier/power-breakdown/latest?zone=DE"
-headers = {
-  "auth-token": ""
-}
+def get_power_breakdown(zone="DE", auth_token=""):
+    url = f"https://api-access.electricitymaps.com/free-tier/power-breakdown/latest?zone={zone}"
+    headers = {
+        "auth-token": auth_token
+    }
 
-response = requests.get(url, headers=headers)
-#print(response.text)
-if response.status_code == 200: #überprüft ob Anfrage erfolgreich war
-  response_data = response.json()
-  power_production_total = response_data['powerProductionTotal']
-  power_consumption_total = response_data['powerConsumptionTotal']
-else:
-  print(f"Error: {response.status_code}")
+    response = requests.get(url, headers=headers)
 
-print(power_production_total)
-print(power_consumption_total)
+    if response.status_code == 200:
+        response_data = response.json()
+        power_production_total = response_data['powerProductionTotal']
+        power_consumption_total = response_data['powerConsumptionTotal']
+        return power_production_total, power_consumption_total
+    else:
+        print(f"Error: {response.status_code}")
+        return None, None
