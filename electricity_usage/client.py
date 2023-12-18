@@ -16,6 +16,7 @@ class Client:
 
         while time.time() < end_time:
             print(f"Client {self.client_id} is running...")
+            print(self.client_id, self.area)
             time.sleep(interval)
 
         print(f"Client {self.client_id} has terminated.")
