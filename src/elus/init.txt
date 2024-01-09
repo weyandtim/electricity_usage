@@ -1,1 +1,0 @@
-initial try for a working CLI including commands start stop areas queue run
