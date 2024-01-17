@@ -3,5 +3,4 @@ class Job:
         self.job_id = job_id
         self.estimate = estimate
         self.deadline = deadline
-        self.area = area
         self.commandline = commandline
