@@ -2,20 +2,18 @@ import json
 import threading
 import time
 import os
+import subprocess
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import em_data
-import client
 import job
 
 class Daemon:
     _instance = None
     _lock = threading.Lock()
 
-    def __init__(self):
+    def __init__(self, area):
         if not hasattr(self, 'initialized'):
-            self.client_threads = []
-            self.next_client_id = 1
             self.jobs = []  # Liste, um Jobs zu speichern
             self.lock = threading.Lock()
             self.initialized = True
@@ -34,6 +32,16 @@ class Daemon:
             print("Daemon is running...")
             auth_token = "your_auth_token_here"
             power_production, power_consumption = em_data.get_power_breakdown(auth_token=auth_token)
+            """if power_consumption < power_production:
+                with self.lock:
+                    for job_instance in self.jobs:
+                        commandline = job_instance.commandline
+                        job_id = job_instance.job_id
+                        print(f"Executing commandline for Job {job_id}: {commandline}")
+
+                        # Führe die Commandline aus
+                        subprocess.run(commandline, shell=True, check=True)"""
+            
             time.sleep(2)
 
         print("Daemon is terminating...")
@@ -52,34 +60,21 @@ class Daemon:
             params = json.load(file)
         
         # Extract parameters and call start_client
-        area = params.get('area')
         estimate = params.get('estimate')
         deadline = params.get('deadline')
         commandline = params.get('commandline')
 
-        if area and estimate and deadline and commandline:
+        if estimate and deadline and commandline:
             with self.lock:
                 # Erhöhe die job_id vor der Verwendung um sicherzustellen, dass sie fortlaufend ist
                 job_id = self.next_job_id
                 self.next_job_id = self.next_client_id+1
                 new_job=f"job{job_id}" #jobs werden wie folgt benannt: job1, job2, ...
-                new_job = job.Job(job_id, estimate, deadline, area, commandline)
+                new_job = job.Job(job_id, estimate, deadline, commandline)
                 self.jobs.append(new_job) #fügt den job des Liste jobs hinzu
                 print(f"Job {job_id} added.")
 
-    """def start_client(self, estimate, deadline, area, commandline):
-        with self.lock:
-            client_id = self.next_client_id
-            self.next_client_id += 1
-
-        print(f"Starting client {client_id}")
-        client_instance = client.Client(client_id=client_id, estimate=estimate, deadline=deadline, area=area, commandline=commandline)
-        print("Client wurde erstellt")
-        client_thread = threading.Thread(target=client_instance.run, daemon=False)
-        client_thread.start()
-
-        with self.lock:
-            self.client_threads.append({"id": client_id, "thread": client_thread})"""
+    
 
 
 class CustomFileSystemEventHandler(FileSystemEventHandler):
@@ -115,8 +110,8 @@ if __name__ == "__main__":
         print("Observer aktiv")
 
     # Erstellen Sie einige Beispiel-JSON-Dateien im input_data-Ordner
-    json_data_1 = {"area": "Area1", "estimate": 100, "deadline": "2023-12-31", "commandline": "command1"}
-    json_data_2 = {"area": "Area2", "estimate": 200, "deadline": "2023-12-31", "commandline": "command2"}
+    json_data_1 = { "estimate": 100, "deadline": "2023-12-31", "commandline": "command1"}
+    json_data_2 = { "estimate": 200, "deadline": "2023-12-31", "commandline": "command2"}
 
     with open("input_data/data1.json", "w") as file:
         json.dump(json_data_1, file)

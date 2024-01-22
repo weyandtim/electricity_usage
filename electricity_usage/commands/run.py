@@ -31,7 +31,6 @@ def run(estimate,deadline,commandline):
     data = {
         "estimate": estimate,
         "deadline": deadline_str,
-        "area": area,
         "commandline": commandline
     }
 	
