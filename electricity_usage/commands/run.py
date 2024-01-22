@@ -26,7 +26,7 @@ def generate_filename():
 def run(estimate,deadline,commandline):
     input_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
 
-    print(f"Input: estimate {estimate}, deadline {deadline}, area {area}, commandline {commandline}")
+    print(f"Input: estimate {estimate}, deadline {deadline}, commandline {commandline}")
     deadline_str = deadline.strftime("%Y-%m-%d %H:%M:%S") #wandelt click.DateTime in String um, weil click.DateTime nicht json kompatibel ist
     data = {
         "estimate": estimate,
