@@ -3,7 +3,7 @@
 from datetime import date, datetime
 import json
 import click
-from commands import areas, queue, run, start, stop
+from electricity_usage.commands import areas, queue, run, start, stop
 
 @click.group(help='AAAAAAAAAAAAAAAAA')
 def cli():

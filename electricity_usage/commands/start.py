@@ -8,6 +8,7 @@ area_list=['DE','BE']
 
 def start(area):
     '''starts the tool background process (demon)'''
-    input_dir = os.path.join((os.path.dirname(os.path.abspath(__file__))),f'input_data_{area}')
-    os.system(f'python3 daemon.py')# {area}')
+    here = os.path.dirname(os.path.abspath(__file__))
+    input_dir = os.path.join(here, f'../input_dir_{area}')
+    os.system(f'python3 daemon.py {area} {input_dir}')
 
