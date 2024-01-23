@@ -2,19 +2,20 @@ import json
 import os
 import pytest
 import threading
-import time
-import electricity_usage.daemon  
+import time 
 from watchdog.events import FileSystemEvent
 from electricity_usage.daemon import Daemon
+from electricity_usage import em_data
+from electricity_usage import job
 
 
 
 """def test_add():
     pass"""
 
-"""@pytest.fixture
+@pytest.fixture
 def daemon_instance():
-    return Daemon()"""
+    return Daemon()
 
 def test_process_json_file(daemon_instance):
     # Erstelle eine Beispiel-JSON-Datei
