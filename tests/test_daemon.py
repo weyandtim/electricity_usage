@@ -15,11 +15,11 @@ from electricity_usage import job
 
 @pytest.fixture
 def daemon_instance():
-    return Daemon()
+    return Daemon(os.getenv("API_KEY"), 'DE')
 
 def test_process_json_file(daemon_instance):
     # Erstelle eine Beispiel-JSON-Datei
-    json_data = {"estimate": 100, "deadline": "2023-12-31", "commandline": "command1"}
+    json_data = {"estimate": 100, "deadline": "2023-12-31", "commandline": 'echo "commandline ausgeführt"'}
     with open("input_data/test_data.json", "w") as file:
         json.dump(json_data, file)
 

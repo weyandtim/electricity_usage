@@ -12,13 +12,15 @@ class Daemon:
     _instance = None
     _lock = threading.Lock()
 
-    def __init__(self):
+    def __init__(self, em_API_key, area):
         if not hasattr(self, 'initialized'):
             self.jobs = []  # Liste, um Jobs zu speichern
             self.lock = threading.Lock()
             self.initialized = True
             self.next_job_id = 1  # Hinzugefügte Variable für die Job-ID
             self.stop_event = threading.Event()  # Event für das Beenden des Daemon-Threads
+            self.em_API_key = em_API_key
+            self.area = area
 
             # Watchdog Setup
             self.event_handler = CustomFileSystemEventHandler(self)
@@ -30,17 +32,20 @@ class Daemon:
     def run(self):
         while not self.stop_event.is_set():
             print("Daemon is running...")
-            auth_token = "your_auth_token_here"
-            power_production, power_consumption = em_data.get_power_breakdown(auth_token=auth_token)
-            """if power_consumption < power_production:
-                with self.lock:
-                    for job_instance in self.jobs:
-                        commandline = job_instance.commandline
-                        job_id = job_instance.job_id
-                        print(f"Executing commandline for Job {job_id}: {commandline}")
+            #API_KEY = os.getenv("API_KEY")
+            #zone = "DE"  # Beispielzone
+            power_production, power_consumption = em_data.get_power_data(self.area, self.em_API_key)
+            print(power_production, power_consumption)
+            if power_production is not None and power_consumption is not None:
+                if power_consumption < power_production:
+                    with self.lock:
+                        for job_instance in self.jobs:
+                            commandline = job_instance.commandline
+                            job_id = job_instance.job_id
+                            print(f"Executing commandline for Job {job_id}: {commandline}")
 
-                        # Führe die Commandline aus
-                        subprocess.run(commandline, shell=True, check=True)"""
+                            # Führe die Commandline aus
+                            subprocess.run(commandline, shell=True, check=True)
             
             time.sleep(2)
 
@@ -54,8 +59,7 @@ class Daemon:
 
 
     def process_json_file(self, file_path):
-        print("Daemon Methode ausgeführt")
-        print("job hinzugefügt")
+        print("Daemon process_json_file Methode ausgeführt")
         with open(file_path, 'r') as file:
             params = json.load(file)
         
@@ -97,7 +101,7 @@ if __name__ == "__main__":
     os.makedirs("input_data", exist_ok=True)
 
     # Instanziieren Sie den Daemon
-    daemon = Daemon()
+    daemon = Daemon(os.getenv("API_KEY"), 'DE')
 
     # Starten Sie die run-Methode des Daemons in einem separaten Thread
     daemon_thread = threading.Thread(target=daemon.run, daemon=True)
@@ -110,8 +114,8 @@ if __name__ == "__main__":
         print("Observer aktiv")
 
     # Erstellen Sie einige Beispiel-JSON-Dateien im input_data-Ordner
-    json_data_1 = { "estimate": 100, "deadline": "2023-12-31", "commandline": "command1"}
-    json_data_2 = { "estimate": 200, "deadline": "2023-12-31", "commandline": "command2"}
+    json_data_1 = { "estimate": 100, "deadline": "2023-12-31", "commandline": 'echo "test erfolgreich"'}
+    json_data_2 = { "estimate": 200, "deadline": "2023-12-31", "commandline": 'echo "test 2 erfolgreich"'}
 
     with open("input_data/data1.json", "w") as file:
         json.dump(json_data_1, file)
