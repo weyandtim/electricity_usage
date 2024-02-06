@@ -28,6 +28,7 @@ def generate_filename():
 @click.option('--commandline', type=str, help='the command line to be executed')
 
 def run(estimate,deadline,area,commandline):
+    '''adds a process to the queue'''
     # define input directory path
     if len(dirs) == 1:
         input_dir = os.path.join(input_data_path, dirs[0])
