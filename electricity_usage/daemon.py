@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     # use given arguments (cf commands/start.py)
     area = sys.argv[1]
-    input_dir = sys-argv[2]
+    input_dir = sys.argv[2]
 
     # Erstellen Sie den input_data-Ordner, wenn er nicht existiert
     os.makedirs(input_dir, exist_ok=True)
