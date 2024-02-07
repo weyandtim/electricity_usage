@@ -43,12 +43,14 @@ class Daemon:
                     # run processes
                     with self.lock:
                         for job_instance in self.jobs:
-                            commandline = job_instance.commandline
-                            job_id = job_instance.job_id
-                            print(f"Executing commandline for Job {job_id}: {commandline}")
+                            deadline = datetime.strptime(job_instance.deadline,"%Y-%m-%d %H:&M:%S")
+                            if deadline <= datetime.now():
+                                commandline = job_instance.commandline
+                                job_id = job_instance.job_id
+                                print(f"Executing commandline for Job {job_id}: {commandline}")
 
-                            # Führe die Commandline aus
-                            subprocess.run(commandline, shell=True, check=True)
+                                # Führe die Commandline aus
+                                subprocess.run(commandline, shell=True, check=True)
             
             # time.sleep(900)
             time.sleep(2)
