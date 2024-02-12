@@ -33,7 +33,7 @@ class Daemon:
     def run(self):
         while not self.stop_event.is_set():
             print("Daemon is running...")
-
+            
             power_production, power_consumption = em_data.get_power_data(self.area, self.em_API_key)
             #print(power_production, power_consumption)
 
@@ -118,4 +118,19 @@ if __name__ == "__main__":
     daemon_thread = threading.Thread(target=daemon.run, daemon=True)
     daemon_thread.start()
 
+    if daemon.observer.is_alive():
+        print("Observer aktiv")
 
+    # Erstellen Sie einige Beispiel-JSON-Dateien im input_data-Ordner
+    json_data_1 = { "estimate": 100, "deadline": "2023-12-31", "commandline": 'echo "test erfolgreich"'}
+    json_data_2 = { "estimate": 200, "deadline": "2023-12-31", "commandline": 'echo "test 2 erfolgreich"'}
+
+    with open("input_data/data1.json", "w") as file:
+        json.dump(json_data_1, file)
+
+    with open("input_data/data2.json", "w") as file:
+        json.dump(json_data_2, file)
+
+    time.sleep(6)
+
+    daemon.stop()

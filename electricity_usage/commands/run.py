@@ -6,15 +6,14 @@ import string
 from datetime import datetime
 from areas import codes
 
-
-## Verzeichnis für die Eingabedaten im Ordner der Datei run.py erstellen, falls es noch nicht existiert
-#input_data_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
-#if not os.path.exists(input_data_directory):
-#    os.makedirs(input_data_directory)
-
 # define input_dir
 input_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),'../input_data')
 dirs = os.listdir(input_data_path)
+
+# Verzeichnis für die Eingabedaten im Ordner der Datei run.py erstellen, falls es noch nicht existiert
+input_data_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
+if not os.path.exists(input_data_directory):
+    os.makedirs(input_data_directory)
 
 def generate_filename():
     rand = ''.join(random.choice(string.ascii_letters) for i in range(16))
@@ -29,7 +28,7 @@ def generate_filename():
 
 def run(estimate,deadline,area,commandline):
     '''adds a process to the queue'''
-    # define input directory path
+    # define input directory path for one or multiple areas
     if len(dirs) == 1:
         input_dir = os.path.join(input_data_path, dirs[0])
     else if area:
@@ -39,7 +38,7 @@ def run(estimate,deadline,area,commandline):
         return
     # solution for only one area at once
     # input_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
-
+    
     print(f"Input: estimate {estimate}, deadline {deadline}, commandline {commandline}")
     deadline_str = deadline.strftime("%Y-%m-%d %H:%M:%S") #wandelt click.DateTime in String um, weil click.DateTime nicht json kompatibel ist
     data = {
@@ -55,10 +54,9 @@ def run(estimate,deadline,area,commandline):
     json_filename = generate_filename()+'.json'
 
     # Den JSON-Dokument im Ordner input_data speichern
-    with open(os.path.join(input_dir, json_filename), 'w') as f:
+    with open(os.path.join(input_data_directory, json_filename), 'w') as f:
         f.write(json_document)
 
     # Die Datei-URL zurückgeben
-    return os.path.join(input_dir, json_filename)
-
+    return os.path.join(input_data_directory, json_filename)
 

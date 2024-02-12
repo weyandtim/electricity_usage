@@ -13,4 +13,3 @@ def areas():
     print('Electricitymaps offers data from corresponding to the following areas\n')
     for a in areas:
         print(a)
-
