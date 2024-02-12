@@ -2,6 +2,7 @@ import json
 import threading
 import time
 import os
+import sys
 import subprocess
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -12,7 +13,7 @@ class Daemon:
     _instance = None
     _lock = threading.Lock()
 
-    def __init__(self, em_API_key, area):
+    def __init__(self, em_API_key, area, input_dir):
         if not hasattr(self, 'initialized'):
             self.jobs = []  # Liste, um Jobs zu speichern
             self.lock = threading.Lock()
@@ -25,28 +26,33 @@ class Daemon:
             # Watchdog Setup
             self.event_handler = CustomFileSystemEventHandler(self)
             self.observer = Observer()
-            self.observer.schedule(self.event_handler, path='input_data', recursive=False) #recursive
+            self.observer.schedule(self.event_handler, path=input_dir, recursive=False) #recursive
             self.observer.start()
 
 
     def run(self):
         while not self.stop_event.is_set():
             print("Daemon is running...")
-            #API_KEY = os.getenv("API_KEY")
-            #zone = "DE"  # Beispielzone
+            
             power_production, power_consumption = em_data.get_power_data(self.area, self.em_API_key)
-            print(power_production, power_consumption)
+            #print(power_production, power_consumption)
+
+            # check conditions
             if power_production is not None and power_consumption is not None:
                 if power_consumption < power_production:
+                    # run processes
                     with self.lock:
                         for job_instance in self.jobs:
-                            commandline = job_instance.commandline
-                            job_id = job_instance.job_id
-                            print(f"Executing commandline for Job {job_id}: {commandline}")
+                            deadline = datetime.strptime(job_instance.deadline,"%Y-%m-%d %H:&M:%S")
+                            if deadline <= datetime.now():
+                                commandline = job_instance.commandline
+                                job_id = job_instance.job_id
+                                print(f"Executing commandline for Job {job_id}: {commandline}")
 
-                            # Führe die Commandline aus
-                            subprocess.run(commandline, shell=True, check=True)
+                                # Führe die Commandline aus
+                                subprocess.run(commandline, shell=True, check=True)
             
+            # time.sleep(900)
             time.sleep(2)
 
         print("Daemon is terminating...")
@@ -97,18 +103,20 @@ class CustomFileSystemEventHandler(FileSystemEventHandler):
 
 
 if __name__ == "__main__":
+
+    # use given arguments (cf commands/start.py)
+    area = sys.argv[1]
+    input_dir = sys.argv[2]
+
     # Erstellen Sie den input_data-Ordner, wenn er nicht existiert
-    os.makedirs("input_data", exist_ok=True)
+    os.makedirs(input_dir, exist_ok=True)
 
     # Instanziieren Sie den Daemon
-    daemon = Daemon(os.getenv("API_KEY"), 'DE')
+    daemon = Daemon(os.getenv("API_KEY"), area, input_dir)
 
     # Starten Sie die run-Methode des Daemons in einem separaten Thread
     daemon_thread = threading.Thread(target=daemon.run, daemon=True)
     daemon_thread.start()
-
-    # Warten Sie einen Moment, um sicherzustellen, dass der Daemon Zeit hat zu starten
-    #time.sleep(2)
 
     if daemon.observer.is_alive():
         print("Observer aktiv")
@@ -126,5 +134,3 @@ if __name__ == "__main__":
     time.sleep(6)
 
     daemon.stop()
-    # Warten Sie auf die Beendigung des Daemon-Threads
-    #daemon_thread.join()

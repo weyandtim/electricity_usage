@@ -1,9 +1,15 @@
 import click
 
+with open('area_codes.txt') as f:
+    areas = f.readlines() # read out all codes + translation
+    # build list of codes to choose from
+    codes = []
+    for a in areas: 
+        codes.append(a.split()[0])
+
 @click.command()
 def areas():
     '''shows list of possible area codes and the corresponding area codes'''
-    #print('shows list of area codes and corresponding areas')
-    print('Currently available area Codes:\n',
-        'DE      Germany\n',
-        'BE      Belgium\n')
+    print('Electricitymaps offers data from corresponding to the following areas\n')
+    for a in areas:
+        print(a)

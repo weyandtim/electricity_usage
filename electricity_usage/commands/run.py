@@ -1,11 +1,14 @@
 import click
 import json
 import os
-#import uuid
 import random
 import string
 from datetime import datetime
+from areas import codes
 
+# define input_dir
+input_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),'../input_data')
+dirs = os.listdir(input_data_path)
 
 # Verzeichnis für die Eingabedaten im Ordner der Datei run.py erstellen, falls es noch nicht existiert
 input_data_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
@@ -20,12 +23,22 @@ def generate_filename():
 @click.command()
 @click.option('--estimate', type=float, help='estimated runtime of the program in hours') #timedelta
 @click.option('--deadline', type=click.DateTime(formats=['%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S']), help='latest date when the program should be finished')
-#@click.option('--area',type=click.Choice(area_list), default='DE', help="area code according to wherever we're putting the list")
+@click.option('--area',type=click.Choice(codes), default=None, help="area code according to codes provided in areas command")
 @click.option('--commandline', type=str, help='the command line to be executed')
 
-def run(estimate,deadline,commandline):
-    input_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
-
+def run(estimate,deadline,area,commandline):
+    '''adds a process to the queue'''
+    # define input directory path for one or multiple areas
+    if len(dirs) == 1:
+        input_dir = os.path.join(input_data_path, dirs[0])
+    else if area:
+        input_dir = os.path.join(input_data_path, f'input_dir_{area}')
+    else:
+        print('Please specify an area when more than one daemon is in use.')
+        return
+    # solution for only one area at once
+    # input_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
+    
     print(f"Input: estimate {estimate}, deadline {deadline}, commandline {commandline}")
     deadline_str = deadline.strftime("%Y-%m-%d %H:%M:%S") #wandelt click.DateTime in String um, weil click.DateTime nicht json kompatibel ist
     data = {
@@ -34,9 +47,6 @@ def run(estimate,deadline,commandline):
         "commandline": commandline
     }
 	
-    # Eine UUID für den aktuellen Aufruf generieren
-    #call_uuid = uuid.uuid4()
-    
     # Das JSON-Dokument erstellen
     json_document = json.dumps(data)
 
@@ -49,5 +59,4 @@ def run(estimate,deadline,commandline):
 
     # Die Datei-URL zurückgeben
     return os.path.join(input_data_directory, json_filename)
-
 
