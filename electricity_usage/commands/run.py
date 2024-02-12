@@ -1,9 +1,15 @@
 import click
 import json
+import os
+import uuid
 
-def write_params(filename, params):
-    with open(filename, 'w') as file:
-        json.dump(params, file)
+
+# Verzeichnis für die Eingabedaten im Ordner der Datei run.py erstellen, falls es noch nicht existiert
+input_data_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
+if not os.path.exists(input_data_directory):
+    os.makedirs(input_data_directory)
+
+
 
 area_list=['DE','BE']
 
@@ -14,15 +20,31 @@ area_list=['DE','BE']
 @click.option('--commandline', type=str, help='the command line to be executed')
 
 def run(estimate,deadline,area,commandline):
-    '''adds a process to the queue'''
+    input_data_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
+
     print(f"Input: estimate {estimate}, deadline {deadline}, area {area}, commandline {commandline}")
-    print("Joke's on you this doesn't do anything.")
     deadline_str = deadline.strftime("%Y-%m-%d %H:%M:%S") #wandelt click.DateTime in String um, weil click.DateTime nicht json kompatibel ist
-    parameters = {
+    data = {
         "estimate": estimate,
         "deadline": deadline_str,
         "area": area,
         "commandline": commandline
     }
-    write_params('datatransfer.json', parameters)
+	
+# Eine UUID für den aktuellen Aufruf generieren
+    call_uuid = uuid.uuid4()
+
+    # Das JSON-Dokument erstellen
+    json_document = json.dumps(data)
+
+    # Den Dateinamen für das JSON-Dokument erstellen
+    json_filename = f'{call_uuid}.json'
+
+    # Den JSON-Dokument im Ordner input_data speichern
+    with open(os.path.join(input_data_directory, json_filename), 'w') as f:
+        f.write(json_document)
+
+    # Die Datei-URL zurückgeben
+    return os.path.join(input_data_directory, json_filename)
+
 

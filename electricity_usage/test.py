@@ -1,19 +1,31 @@
-#!usr/bin/env python3
-# Module containing the data transformation
-from datetime import date, datetime
-import click
+import client
+import daemon
+import threading
+import time
 
-@click.command()
-@click.option('--estimate', type=float, help='Estimated runtime of the program in hours')
-@click.option('--deadline', default='2023-11-27 15:30:00', type=click.DateTime(formats=["%Y-%m-%d %H:%M:%S"]), help='latest date, time when the program should be finished in "YYYY-MM-DD HH:MM:SS"')
-@click.option('--area', type=str, help='Local ara code as given in x.file') #default implementation
-@click.option('--path', type=str, help='Path to your application')
-@click.option('--cond', type=str, default=None, help='conditions for execution')
+"""client1 = client.Client(client_id=1, estimate=10, deadline="2023-12-31", area="DE", commandline="some_command")
+print(client1.client_id)
+print(client1.deadline)"""
 
-def hello(estimate, deadline, area, path, cond):
-    print(f"Input: estimate {estimate}, deadline {deadline}, area {area}, path {path}, conditions {cond}")
-    print("Joke's on you this doesn't do anything.")
-    #deadline still needs to be converted into date.fromisoformat(deadline)
+# Erzeuge eine Instanz des Daemons
+daemon_instance = daemon.Daemon.get_instance()
 
-if __name__ == '__main__':
-    hello()
+# Starte die Methode run des Daemons in einem separaten Thread
+daemon_thread = threading.Thread(target=daemon_instance.run, daemon=True)
+daemon_thread.start()
+
+# Rufe die Methode start_client des Daemons auf
+estimate = 100  # Beispielwert für die Schätzung
+deadline = "2023-12-31"  # Beispielwert für die Frist
+area = "DE"  # Beispielwert für den Bereich
+commandline = "your_command_here"  # Beispielwert für die Befehlszeile
+daemon_instance.start_client(estimate, deadline, area, commandline)
+
+time.sleep(10)
+
+daemon_instance1 = daemon.Daemon.get_instance() #daemon_instance1 und daemon_instance verweisen auf das gleiche Objekt, es existiert also nur ein Daemon
+daemon_instance1.start_client(50, "2023-12-12", "DE", "test")
+
+# Füge optional eine Verzögerung hinzu, um die Ausführung des Daemons und des Clients zu sehen
+#time.sleep(30)
+
