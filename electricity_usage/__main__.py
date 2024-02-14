@@ -1,10 +1,19 @@
+#!usr/bin/env python3
+# Module containing the data transformation
+from datetime import date, datetime
+import json
 import click
+from electricity_usage.commands import areas, queue, run, start, stop
 
+@click.group(help='This is a tool to schedule a process to start when there is a local energy production surplus.')
+def cli():
+   pass
+cli.add_command(areas.areas)
+cli.add_command(queue.queue)
+cli.add_command(run.run)
+cli.add_command(start.start)
+cli.add_command(stop.stop)
 
-@click.command()
-def main():
-    click.echo("This is electricity_usage's command line interface.")
-
-
-if __name__ == "__main__":
-    main()
+   
+if __name__ == '__main__':
+    cli()
