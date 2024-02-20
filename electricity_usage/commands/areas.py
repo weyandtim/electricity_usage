@@ -1,6 +1,6 @@
 import click
 
-with open('area_codes.txt') as f:
+with open('electricity_usage/area_codes.txt', encoding='utf-8') as f:
     areas = f.readlines() # read out all codes + translation
     # build list of codes to choose from
     codes = []

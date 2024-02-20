@@ -4,12 +4,17 @@ import os
 import random
 import string
 from datetime import datetime
-from areas import codes
+#from areas import codes
+from electricity_usage.commands.areas import codes
 
-# define input_dir
+'''# define input_dir
 input_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),'../input_data')
-dirs = os.listdir(input_data_path)
+dirs = os.listdir(input_data_path)'''
 
+#pfad ist provisorisch muss noch angepasst werden
+input_data_path = 'C:\git\electricity_usage\input_data'
+# Liste der Dateien und Verzeichnisse im input_data-Verzeichnis
+dirs = os.listdir(input_data_path)
 # Verzeichnis für die Eingabedaten im Ordner der Datei run.py erstellen, falls es noch nicht existiert
 input_data_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
 if not os.path.exists(input_data_directory):
@@ -31,7 +36,7 @@ def run(estimate,deadline,area,commandline):
     # define input directory path for one or multiple areas
     if len(dirs) == 1:
         input_dir = os.path.join(input_data_path, dirs[0])
-    else if area:
+    elif area:
         input_dir = os.path.join(input_data_path, f'input_dir_{area}')
     else:
         print('Please specify an area when more than one daemon is in use.')
