@@ -23,6 +23,7 @@ class Daemon:
             self.stop_event = threading.Event()  # Event für das Beenden des Daemon-Threads
             self.em_API_key = em_API_key
             self.area = area
+            self.input_dir = input_dir
 
             # Watchdog Setup
             self.event_handler = CustomFileSystemEventHandler(self)
@@ -36,7 +37,7 @@ class Daemon:
             print("Daemon is running...")
             
             power_production, power_consumption = em_data.get_power_data(self.area, self.em_API_key)
-            #print(power_production, power_consumption)
+            print(power_production, power_consumption)
 
             # check conditions
             if power_production is not None and power_consumption is not None:
@@ -44,7 +45,7 @@ class Daemon:
                     # run processes
                     with self.lock:
                         for job_instance in self.jobs:
-                            deadline = datetime.strptime(job_instance.deadline,"%Y-%m-%d %H:&M:%S")
+                            deadline = datetime.datetime.strptime(job_instance.deadline,"%Y-%m-%d %H:&M:%S")
                             if deadline <= datetime.now():
                                 commandline = job_instance.commandline
                                 job_id = job_instance.job_id
@@ -54,7 +55,7 @@ class Daemon:
                                 subprocess.run(commandline, shell=True, check=True)
             
             # time.sleep(900)
-            time.sleep(2)
+            time.sleep(10)
 
         print("Daemon is terminating...")
         self.observer.stop()
@@ -63,6 +64,24 @@ class Daemon:
 
     def stop(self):
         self.stop_event.set()  # Setzen Sie das Event, um den Daemon-Thread zu beenden
+        try:
+            # Überprüfen, ob der Ordner existiert
+            if os.path.exists(self.input_dir):
+                # Liste aller Dateien im Ordner
+                files = os.listdir(self.input_dir)
+                for file_name in files:
+                    # Pfad zur Datei erstellen
+                    file_path = os.path.join(self.input_dir, file_name)
+                    # Überprüfen, ob das Element ein reguläres File ist
+                    if os.path.isfile(file_path):
+                        # Datei löschen
+                        os.remove(file_path)
+                print("Alle Dateien im Ordner wurden erfolgreich gelöscht.")
+            else:
+                print(f"Der Ordner {self.input_dir} existiert nicht.")
+        except Exception as e:
+            print(f"Fehler beim Löschen der Dateien: {str(e)}")
+
 
 
     def process_json_file(self, file_path):
@@ -131,7 +150,7 @@ if __name__ == "__main__":
         print("Observer aktiv")
 
     # Erstellen Sie einige Beispiel-JSON-Dateien im input_data-Ordner
-    json_data_1 = { "estimate": 100, "deadline": "2023-12-31", "commandline": 'echo "test erfolgreich"'}
+    '''json_data_1 = { "estimate": 100, "deadline": "2023-12-31", "commandline": 'echo "test erfolgreich"'}
     json_data_2 = { "estimate": 200, "deadline": "2023-12-31", "commandline": 'echo "test 2 erfolgreich"'}
     
     with open("input_data/data1.json", "w") as file:
@@ -142,7 +161,7 @@ if __name__ == "__main__":
 
 
     with open("input_data/stop_token213.txt", 'w'):
-        pass
+        pass'''
 
     time.sleep(15)
 

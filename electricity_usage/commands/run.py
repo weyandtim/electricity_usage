@@ -4,64 +4,42 @@ import os
 import random
 import string
 from datetime import datetime
-#from areas import codes
 from electricity_usage.commands.areas import codes
 
-'''# define input_dir
-input_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),'../input_data')
-dirs = os.listdir(input_data_path)'''
-
-#pfad ist provisorisch muss noch angepasst werden
-input_data_path = 'C:\git\electricity_usage\input_data'
-# Liste der Dateien und Verzeichnisse im input_data-Verzeichnis
-dirs = os.listdir(input_data_path)
-# Verzeichnis für die Eingabedaten im Ordner der Datei run.py erstellen, falls es noch nicht existiert
-input_data_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
-if not os.path.exists(input_data_directory):
-    os.makedirs(input_data_directory)
+input_data_directory = 'C:\\git\\electricity_usage\\input_data'
 
 def generate_filename():
-    rand = ''.join(random.choice(string.ascii_letters) for i in range(16))
+    rand = ''.join(random.choice(string.ascii_letters) for _ in range(16))
     time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    return time+'_'+rand
+    return f"{time}_{rand}.json"
 
 @click.command()
-@click.option('--estimate', type=float, help='estimated runtime of the program in hours') #timedelta
+@click.option('--estimate', type=float, help='estimated runtime of the program in hours') 
 @click.option('--deadline', type=click.DateTime(formats=['%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S']), help='latest date when the program should be finished')
-@click.option('--area',type=click.Choice(codes), default=None, help="area code according to codes provided in areas command")
+#@click.option('--area',type=click.Choice(codes), default=None, help="area code according to codes provided in areas command")
 @click.option('--commandline', type=str, help='the command line to be executed')
 
-def run(estimate,deadline,area,commandline):
-    '''adds a process to the queue'''
-    # define input directory path for one or multiple areas
-    if len(dirs) == 1:
-        input_dir = os.path.join(input_data_path, dirs[0])
-    elif area:
-        input_dir = os.path.join(input_data_path, f'input_dir_{area}')
+def run(estimate,deadline,commandline): #später zusätzlich area einfügen um mehrere Daemon input_directorys unterscheiden zu können
+    '''if area:
+        input_dir = os.path.join(input_data_directory, f'input_dir_{area}')
     else:
         print('Please specify an area when more than one daemon is in use.')
-        return
-    # solution for only one area at once
-    # input_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
+        return'''
+    if deadline.time() == datetime.min.time():  # Wenn die Uhrzeit nicht im Parameter enthalten ist
+        deadline = deadline.replace(hour=0, minute=0, second=0)  # Setze die Uhrzeit auf 00:00:00
     
-    print(f"Input: estimate {estimate}, deadline {deadline}, commandline {commandline}")
-    deadline_str = deadline.strftime("%Y-%m-%d %H:%M:%S") #wandelt click.DateTime in String um, weil click.DateTime nicht json kompatibel ist
+    deadline_str = deadline.strftime("%Y-%m-%d %H:%M:%S")
     data = {
         "estimate": estimate,
         "deadline": deadline_str,
         "commandline": commandline
     }
-	
-    # Das JSON-Dokument erstellen
+    
     json_document = json.dumps(data)
-
-    # Den Dateinamen für das JSON-Dokument erstellen
-    json_filename = generate_filename()+'.json'
-
-    # Den JSON-Dokument im Ordner input_data speichern
+    json_filename = generate_filename()
+    print('argumente entgegen genommen')
     with open(os.path.join(input_data_directory, json_filename), 'w') as f:
         f.write(json_document)
-
-    # Die Datei-URL zurückgeben
+    
     return os.path.join(input_data_directory, json_filename)
 
