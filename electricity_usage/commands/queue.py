@@ -1,11 +1,12 @@
 import click
+from xdg_base_dirs import xdg_data_home
 
 @click.command()
 
 def queue():
     '''shows a list of processes in queue'''
-    here = os.path.dirname(os.path.abspath(__file__))
-    main = os.path.join(here, '../input_data')
+    datadir = xdg_data_home()
+    main = os.path.join(datadir, '../input_data')
     dirs = os.listdir(main)
     for d in dirs:
         print('For Subdirectory '+d+':\n')
