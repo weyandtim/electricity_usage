@@ -4,16 +4,12 @@ import os
 import random
 import string
 from datetime import datetime
+from xdg_base_dirs import xdg_data_home
 from areas import codes
 
 # define input_dir
-input_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),'../input_data')
+input_data_path = os.path.join(xdg_data_home(), 'electricity_usage/input_data')
 dirs = os.listdir(input_data_path)
-
-# Verzeichnis für die Eingabedaten im Ordner der Datei run.py erstellen, falls es noch nicht existiert
-input_data_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')
-if not os.path.exists(input_data_directory):
-    os.makedirs(input_data_directory)
 
 def generate_filename():
     rand = ''.join(random.choice(string.ascii_letters) for i in range(16))
@@ -31,7 +27,7 @@ def run(estimate,deadline,area,commandline):
     # define input directory path for one or multiple areas
     if len(dirs) == 1:
         input_dir = os.path.join(input_data_path, dirs[0])
-    else if area:
+    elif area:
         input_dir = os.path.join(input_data_path, f'input_dir_{area}')
     else:
         print('Please specify an area when more than one daemon is in use.')
@@ -54,9 +50,9 @@ def run(estimate,deadline,area,commandline):
     json_filename = generate_filename()+'.json'
 
     # Den JSON-Dokument im Ordner input_data speichern
-    with open(os.path.join(input_data_directory, json_filename), 'w') as f:
+    with open(os.path.join(input_dir, json_filename), 'w') as f:
         f.write(json_document)
 
     # Die Datei-URL zurückgeben
-    return os.path.join(input_data_directory, json_filename)
+    return os.path.join(input_dir, json_filename)
 
