@@ -1,7 +1,7 @@
 import click
 import os
 from xdg_base_dirs import xdg_data_home
-from areas import codes
+from .areas import codes
 
 @click.command()
 @click.option('--area',type=click.Choice(codes), default='DE', help="area code according to 'electricity_usage areas'")
