@@ -5,8 +5,9 @@ import random
 import string
 from datetime import datetime
 from electricity_usage.commands.areas import codes
+from electricity_usage import data_dirs 
 
-input_data_directory = 'C:\\git\\electricity_usage\\input_data'
+input_data_directory = data_dirs.get_input_dir_path()
 
 def generate_filename():
     rand = ''.join(random.choice(string.ascii_letters) for _ in range(16))

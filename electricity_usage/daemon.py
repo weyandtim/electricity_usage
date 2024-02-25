@@ -45,8 +45,8 @@ class Daemon:
                     # run processes
                     with self.lock:
                         for job_instance in self.jobs:
-                            deadline = datetime.datetime.strptime(job_instance.deadline,"%Y-%m-%d %H:&M:%S")
-                            if deadline <= datetime.now():
+                            deadline = datetime.datetime.strptime(job_instance.deadline,"%Y-%m-%d %H:%M:%S")
+                            if deadline <= datetime.datetime.now():
                                 commandline = job_instance.commandline
                                 job_id = job_instance.job_id
                                 print(f"Executing commandline for Job {job_id}: {commandline}")

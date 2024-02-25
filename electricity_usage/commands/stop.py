@@ -3,9 +3,10 @@ import click
 import os
 import datetime
 import random
+from electricity_usage import data_dirs
 
 # Pfad zum input_data-Ordner
-input_data_dir = "input_data"
+input_data_dir = data_dirs.get_input_dir_path()
 
 def generate_stop_token_filename():
     rand = ''.join(random.choice(string.ascii_letters) for _ in range(16))
