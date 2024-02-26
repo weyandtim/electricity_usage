@@ -36,7 +36,7 @@ def create_input_dir_path(area):
 
 
 # gibt den Pfad zum input_dir Ordner zurück 
-def get_input_dir_path(area):
+def get_input_dir_path(area=None):
     '''
     # Verzeichnis für Anwendungsdaten erhalten
     data_dir = platformdirs.user_data_dir(appname='electricity_usage')
@@ -50,7 +50,8 @@ def get_input_dir_path(area):
 
     # aternative for xdg-base-dirs
     data_dir = xdg_data_home()
-    input_dir = os.path.join(data_dir, f'electricity_usage/input_data/input_dirs/input_dir_{area}')
-
+        input_dir = os.path.join(data_dir, 'electricity_usage/input_data/input_dirs')
+    if (area!=None):
+        input_dir = os.path.join(data_dir, f'electricity_usage/input_data/input_dirs/input_dir_{area}')
     return input_dir
 
