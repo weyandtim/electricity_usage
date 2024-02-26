@@ -15,6 +15,7 @@ def start(area):
     datadir = xdg_data_home()
     os.makedirs(os.path.join(datadir, 'electricity_usage/input_data'), exist_ok=True)
     input_dir = os.path.join(datadir, f'electricity_usage/input_data/input_dir_{area}')
+    os.makedirs(input_dir, exist_ok=True)
     #alternative: daemon direkt von hier aus ausführen (ohne daemon.py auszuführen) 
     # Instanziieren Sie den Daemon
     daemon_instance = daemon.Daemon(os.getenv("API_KEY"), area, input_dir)
