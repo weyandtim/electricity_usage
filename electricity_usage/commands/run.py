@@ -5,10 +5,11 @@ import random
 import string
 from datetime import datetime
 from xdg_base_dirs import xdg_data_home
-from areas import codes
+from .areas import codes
 
 # define input_dir
 input_data_path = os.path.join(xdg_data_home(), 'electricity_usage/input_data')
+os.makedirs(input_data_path, exist_ok=True)
 dirs = os.listdir(input_data_path)
 
 def generate_filename():
