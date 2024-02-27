@@ -5,10 +5,11 @@ import random
 import string
 from datetime import datetime
 from electricity_usage.data_dirs import get_input_dir_path
-from areas import codes
+from .areas import codes
 
 # define input_dir
 input_data_path = get_input_dir_path()
+#input_data_path = os.makedirs(get_input_dir_path(), exist_ok=True)
 dirs = os.listdir(input_data_path)
 
 def generate_filename():
@@ -31,6 +32,7 @@ def run(estimate,deadline,area,commandline):
         input_dir = os.path.join(input_data_path, f'input_dir_{area}')
     else:
         print('Please specify an area when more than one daemon is in use.')
+        print(dirs)
         return
     # solution for only one area at once
     # input_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_data')

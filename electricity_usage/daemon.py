@@ -35,7 +35,7 @@ class Daemon:
             print("Daemon is running...")
             
             power_production, power_consumption = em_data.get_power_data(self.area, self.em_API_key)
-            #print(power_production, power_consumption)
+            print(power_production, power_consumption)
 
             # check conditions
             if power_production is not None and power_consumption is not None:
@@ -52,8 +52,8 @@ class Daemon:
                                 # Führe die Commandline aus
                                 subprocess.run(commandline, shell=True, check=True)
             
-            # time.sleep(900)
-            time.sleep(2)
+            time.sleep(90)
+            # time.sleep(2)
 
         print("Daemon is terminating...")
         self.observer.stop()
@@ -84,9 +84,6 @@ class Daemon:
                 self.jobs.append(new_job) #fügt den job des Liste jobs hinzu
                 print(f"Job {job_id} added.")
 
-    
-
-
 class CustomFileSystemEventHandler(FileSystemEventHandler):
     def __init__(self, daemon_instance):
         super().__init__()
@@ -99,9 +96,6 @@ class CustomFileSystemEventHandler(FileSystemEventHandler):
             print(f"New JSON file detected: {event.src_path}")
             self.daemon_instance.process_json_file(event.src_path) #ruft die Methode process_json_file des Daemons auf
                 
-
-
-
 if __name__ == "__main__":
 
     # use given arguments (cf commands/start.py)
@@ -131,6 +125,5 @@ if __name__ == "__main__":
     with open("input_data/data2.json", "w") as file:
         json.dump(json_data_2, file)
 
-    time.sleep(6)
-
+    time.sleep(60)
     daemon.stop()

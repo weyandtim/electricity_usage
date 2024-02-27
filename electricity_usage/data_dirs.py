@@ -50,7 +50,7 @@ def get_input_dir_path(area=None):
 
     # aternative for xdg-base-dirs
     data_dir = xdg_data_home()
-        input_dir = os.path.join(data_dir, 'electricity_usage/input_data/input_dirs')
+    input_dir = os.path.join(data_dir, 'electricity_usage/input_data/input_dirs')
     if (area!=None):
         input_dir = os.path.join(data_dir, f'electricity_usage/input_data/input_dirs/input_dir_{area}')
     return input_dir
