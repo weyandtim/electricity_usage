@@ -10,5 +10,5 @@ for a in areas_str:
 def areas():
     '''shows list of possible area codes and the corresponding area codes'''
     print('Electricitymaps offers data from corresponding to the following areas\n')
-    for a in areas:
+    for a in areas_str:
         print(a)

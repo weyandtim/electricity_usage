@@ -4,6 +4,7 @@ import time
 import os
 import sys
 import subprocess
+import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from electricity_usage import job
@@ -22,6 +23,7 @@ class Daemon:
             self.stop_event = threading.Event()  # Event für das Beenden des Daemon-Threads
             self.em_API_key = em_API_key
             self.area = area
+            self.input_dir = input_dir
 
             # Watchdog Setup
             self.event_handler = CustomFileSystemEventHandler(self)
@@ -43,8 +45,9 @@ class Daemon:
                     # run processes
                     with self.lock:
                         for job_instance in self.jobs:
-                            deadline = datetime.strptime(job_instance.deadline,"%Y-%m-%d %H:&M:%S")
-                            if deadline <= datetime.now():
+                            deadline = datetime.datetime.strptime(job_instance.deadline,"%Y-%m-%d %H:%M:%S")
+                            # check deadline
+                            if deadline <= datetime.datetime.now():
                                 commandline = job_instance.commandline
                                 job_id = job_instance.job_id
                                 print(f"Executing commandline for Job {job_id}: {commandline}")
@@ -62,6 +65,24 @@ class Daemon:
 
     def stop(self):
         self.stop_event.set()  # Setzen Sie das Event, um den Daemon-Thread zu beenden
+        try:
+            # Überprüfen, ob der Ordner existiert
+            if os.path.exists(self.input_dir):
+                # Liste aller Dateien im Ordner
+                files = os.listdir(self.input_dir)
+                for file_name in files:
+                    # Pfad zur Datei erstellen
+                    file_path = os.path.join(self.input_dir, file_name)
+                    # Überprüfen, ob das Element ein reguläres File ist
+                    if os.path.isfile(file_path):
+                        # Datei löschen
+                        os.remove(file_path)
+                print("Alle Dateien im Ordner wurden erfolgreich gelöscht.")
+            else:
+                print(f"Der Ordner {self.input_dir} existiert nicht.")
+        except Exception as e:
+            print(f"Fehler beim Löschen der Dateien: {str(e)}")
+
 
 
     def process_json_file(self, file_path):
@@ -91,11 +112,24 @@ class CustomFileSystemEventHandler(FileSystemEventHandler):
 
     def on_created(self, event):
         if event.is_directory:
+            print("event erkannt")
             return
-        elif event.event_type == 'created' and event.src_path.endswith('.json'):
-            print(f"New JSON file detected: {event.src_path}")
-            self.daemon_instance.process_json_file(event.src_path) #ruft die Methode process_json_file des Daemons auf
-                
+
+        elif event.event_type == 'created':
+            if event.src_path.endswith('.json'):#ruft die Methode process_json_file des Daemons auf
+                print(f"New JSON file detected: {event.src_path}")
+                self.daemon_instance.process_json_file(event.src_path)     
+            elif event.src_path.endswith('txt'):#ruft die Methode stop des Daemons auf
+                print("Stop token file detected. Stopping daemon.")
+                self.daemon_instance.stop() 
+
+
+
+'''
+elif event.src_path.startswith('stop_token'):#ruft die Methode stop des Daemons auf
+                print("Stop token file detected. Stopping daemon.")
+                self.daemon_instance.stop() ''' 
+
 if __name__ == "__main__":
 
     # use given arguments (cf commands/start.py)
@@ -106,10 +140,10 @@ if __name__ == "__main__":
     os.makedirs(input_dir, exist_ok=True)
 
     # Instanziieren Sie den Daemon
-    daemon = Daemon(os.getenv("API_KEY"), area, input_dir)
+    daemon = Daemon(os.getenv("API_KEY"), 'DE', 'C:\git\electricity_usage\input_data')
 
     # Starten Sie die run-Methode des Daemons in einem separaten Thread
-    daemon_thread = threading.Thread(target=daemon.run, daemon=True)
+    daemon_thread = threading.Thread(target=daemon.run) #daemon=True darf nicht gesetzt werden
     daemon_thread.start()
 
     if daemon.observer.is_alive():
@@ -126,4 +160,4 @@ if __name__ == "__main__":
         json.dump(json_data_2, file)
 
     time.sleep(60)
-    daemon.stop()
+#   daemon.stop()
