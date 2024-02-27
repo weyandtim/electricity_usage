@@ -41,7 +41,7 @@ class Daemon:
 
             # commandline ausführen wenn Strom da ist
             if power_production is not None and power_consumption is not None:
-                if power_consumption > power_production:
+                if power_consumption < power_production:
                     # run processes
                     with self.lock:
                         for job_instance in self.jobs:
