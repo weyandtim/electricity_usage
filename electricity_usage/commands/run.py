@@ -4,12 +4,12 @@ import os
 import random
 import string
 from datetime import datetime
-from electricity_usage.data_dirs import get_input_dir_path
+from electricity_usage import data_dirs
 from .areas import codes
 
 # define input_dir
-input_data_path = get_input_dir_path()
-#input_data_path = os.makedirs(get_input_dir_path(), exist_ok=True)
+os.makedirs(data_dirs.get_input_dir_path(), exist_ok=True)
+input_data_path = data_dirs.get_input_dir_path()
 dirs = os.listdir(input_data_path)
 
 def generate_filename():
@@ -25,13 +25,14 @@ def generate_filename():
 
 def run(estimate,deadline,area,commandline):
     '''adds a process to the queue'''
+    print(input_data_path)
     # define input directory path for one or multiple areas
     if len(dirs) == 1:
         input_dir = os.path.join(input_data_path, dirs[0])
     elif area:
         input_dir = os.path.join(input_data_path, f'input_dir_{area}')
     else:
-        print('Please specify an area when more than one daemon is in use.')
+        print('Please specify an area when more than one daemon is in use.\n')
         print(dirs)
         return
     # solution for only one area at once
