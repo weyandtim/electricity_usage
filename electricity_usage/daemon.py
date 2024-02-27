@@ -55,8 +55,8 @@ class Daemon:
                                 # Führe die Commandline aus
                                 subprocess.run(commandline, shell=True, check=True)
             
-            # time.sleep(900)
-            time.sleep(10)
+            time.sleep(90)
+            # time.sleep(2)
 
         print("Daemon is terminating...")
         self.observer.stop()
@@ -105,9 +105,6 @@ class Daemon:
                 self.jobs.append(new_job) #fügt den job des Liste jobs hinzu
                 print(f"Job {job_id} added.")
 
-    
-
-
 class CustomFileSystemEventHandler(FileSystemEventHandler):
     def __init__(self, daemon_instance):
         super().__init__()
@@ -117,6 +114,7 @@ class CustomFileSystemEventHandler(FileSystemEventHandler):
         if event.is_directory:
             print("event erkannt")
             return
+
         elif event.event_type == 'created':
             if event.src_path.endswith('.json'):#ruft die Methode process_json_file des Daemons auf
                 print(f"New JSON file detected: {event.src_path}")
@@ -151,6 +149,15 @@ if __name__ == "__main__":
     if daemon.observer.is_alive():
         print("Observer aktiv")
 
-    time.sleep(15)
+    # Erstellen Sie einige Beispiel-JSON-Dateien im input_data-Ordner
+    json_data_1 = { "estimate": 100, "deadline": "2023-12-31", "commandline": 'echo "test erfolgreich"'}
+    json_data_2 = { "estimate": 200, "deadline": "2023-12-31", "commandline": 'echo "test 2 erfolgreich"'}
 
-    #daemon.stop()
+    with open("input_data/data1.json", "w") as file:
+        json.dump(json_data_1, file)
+
+    with open("input_data/data2.json", "w") as file:
+        json.dump(json_data_2, file)
+
+    time.sleep(60)
+#   daemon.stop()

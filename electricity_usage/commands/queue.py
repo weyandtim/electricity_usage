@@ -1,13 +1,13 @@
 import click
 import os
 from xdg_base_dirs import xdg_data_home
+from electricity_usage.data_dirs import get_input_dir_path
 
 @click.command()
 
 def queue():
     '''shows a list of processes in queue'''
-    datadir = xdg_data_home()
-    main = os.path.join(datadir, 'electricity_usage/input_data')
+    main = get_input_dir_path()
     dirs = os.listdir(main)
     print("Currently queued processes:\n")
     for d in dirs:
