@@ -4,3 +4,4 @@ class Job:
         self.estimate = estimate
         self.deadline = deadline
         self.commandline = commandline
+
