@@ -1,6 +1,6 @@
 import click
 import os
-import platformdirs
+import threading
 from electricity_usage.commands.areas import codes
 from electricity_usage import data_dirs
 from electricity_usage import daemon
