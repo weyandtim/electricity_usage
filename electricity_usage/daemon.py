@@ -39,32 +39,48 @@ class Daemon:
             power_production, power_consumption = em_data.get_power_data(self.area, self.em_API_key)
             print(power_production, power_consumption)
 
-            # check conditions
+            # commandline ausführen wenn Strom da ist
             if power_production is not None and power_consumption is not None:
                 if power_consumption < power_production:
                     # run processes
                     with self.lock:
                         for job_instance in self.jobs:
-                            deadline = datetime.datetime.strptime(job_instance.deadline,"%Y-%m-%d %H:%M:%S")
-                            # check deadline
-                            if deadline <= datetime.datetime.now():
-                                commandline = job_instance.commandline
-                                job_id = job_instance.job_id
-                                print(f"Executing commandline for Job {job_id}: {commandline}")
+                            commandline = job_instance.commandline
+                            job_id = job_instance.job_id
+                            print(f"Executing commandline for Job {job_id}: {commandline}")
+                            # Führe die Commandline aus
+                            subprocess.run(commandline, shell=True, check=True)
+                            # lösche den job aus der Liste self.jobs damit er nicht nochmal ausgeführt wird
+                            self.jobs.remove(job_instance)
 
-                                # Führe die Commandline aus
-                                subprocess.run(commandline, shell=True, check=True)
-            
-            time.sleep(90)
-            # time.sleep(2)
+            # commandline ausführen um die deadline zu halten
+            with self.lock:
+                for job_instance in self.jobs:
+                    print(f"Job ID: {job_instance.job_id}, Estimate: {job_instance.estimate}, Deadline: {job_instance.deadline}, Commandline: {job_instance.commandline}")  
+                    # Berechne den Zeitpunkt deadline - estimate
+                    latest_starting_point = job_instance.deadline - datetime.timedelta(hours=job_instance.estimate)
+                    # Überprüfe, ob latest_starting_point kleiner oder gleich der aktuellen Zeit ist
+                    if latest_starting_point <= datetime.datetime.now():
+                        commandline = job_instance.commandline
+                        job_id = job_instance.job_id
+                        print(f"Executing commandline for Job {job_id}: {commandline}")
+                        # Führe die Commandline aus
+                        subprocess.run(commandline, shell=True, check=True)
+                        # lösche den job aus der Liste self.jobs damit er nicht nochmal ausgeführt wird
+                        self.jobs.remove(job_instance)
 
-        print("Daemon is terminating...")
-        self.observer.stop()
-        self.observer.join()  # Warten, bis der Observer-Thread beendet ist
+            # time.sleep(900)
+            self.stop_event.wait(timeout=100)
+
+        print("Daemon Terminated")
+        
 
 
     def stop(self):
-        self.stop_event.set()  # Setzen Sie das Event, um den Daemon-Thread zu beenden
+        self.stop_event.set()  # Stop Event setzen, um den Daemon-Thread zu beenden
+        self.observer.stop()  # Observer-Thread beenden
+        self.observer.join()  # Warten bis der Observer-Thread beendet ist"""
+        
         try:
             # Überprüfen, ob der Ordner existiert
             if os.path.exists(self.input_dir):
@@ -90,7 +106,7 @@ class Daemon:
         with open(file_path, 'r') as file:
             params = json.load(file)
         
-        # Extract parameters and call start_client
+        # Parameter auslesen
         estimate = params.get('estimate')
         deadline = params.get('deadline')
         commandline = params.get('commandline')
@@ -114,21 +130,6 @@ class CustomFileSystemEventHandler(FileSystemEventHandler):
         if event.is_directory:
             print("event erkannt")
             return
-
-        elif event.event_type == 'created':
-            if event.src_path.endswith('.json'):#ruft die Methode process_json_file des Daemons auf
-                print(f"New JSON file detected: {event.src_path}")
-                self.daemon_instance.process_json_file(event.src_path)     
-            elif event.src_path.endswith('txt'):#ruft die Methode stop des Daemons auf
-                print("Stop token file detected. Stopping daemon.")
-                self.daemon_instance.stop() 
-
-
-
-'''
-elif event.src_path.startswith('stop_token'):#ruft die Methode stop des Daemons auf
-                print("Stop token file detected. Stopping daemon.")
-                self.daemon_instance.stop() ''' 
 
 if __name__ == "__main__":
 

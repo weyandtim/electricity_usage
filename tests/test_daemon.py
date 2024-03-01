@@ -9,10 +9,6 @@ from electricity_usage import em_data
 from electricity_usage import job
 
 
-
-"""def test_add():
-    pass"""
-
 @pytest.fixture
 def daemon_instance():
     return Daemon(os.getenv("API_KEY"), 'DE')
@@ -30,7 +26,7 @@ def test_process_json_file(daemon_instance):
     assert len(daemon_instance.jobs) == 1
     assert daemon_instance.jobs[0].estimate == 100
     assert daemon_instance.jobs[0].deadline == "2023-12-31"
-    assert daemon_instance.jobs[0].commandline == "command1"
+    assert daemon_instance.jobs[0].commandline == 'echo "commandline ausgeführt"'
 
 def test_on_created(daemon_instance):
     # Erstelle eine Beispiel-JSON-Datei
