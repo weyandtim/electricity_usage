@@ -7,6 +7,7 @@ def create_input_dir_path():
     # Verzeichnis für Anwendungsdaten erhalten
     data_dir = platformdirs.user_data_dir(appname='electricity_usage')
 
+
     # electricity_usage Verzeichnis erstellen, wenn es nicht existiert
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
@@ -20,13 +21,13 @@ def create_input_dir_path():
     input_dir = os.path.join(input_dirs_dir, 'input_dir')
     if not os.path.exists(input_dir):
         os.makedirs(input_dir)
-
     return input_dir
 
 
 
 # gibt den Pfad zum input_dir Ordner zurück 
 def get_input_dir_path():
+
     # Verzeichnis für Anwendungsdaten erhalten
     data_dir = platformdirs.user_data_dir(appname='electricity_usage')
 
@@ -37,12 +38,3 @@ def get_input_dir_path():
     input_dir = os.path.join(input_dirs_dir, 'input_dir')
 
     return input_dir
-
-
-'''# Ausführung der Funktionen
-create_input_dir_result = create_input_dir_path()
-get_input_dir_result = get_input_dir_path()
-
-# Ausgabe der Ergebnisse
-print("Ergebnis von create_input_dir_path():", create_input_dir_result)
-print("Ergebnis von get_input_dir_path():", get_input_dir_result)'''

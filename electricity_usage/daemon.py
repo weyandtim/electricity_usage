@@ -80,6 +80,7 @@ class Daemon:
         self.stop_event.set()  # Stop Event setzen, um den Daemon-Thread zu beenden
         self.observer.stop()  # Observer-Thread beenden
         self.observer.join()  # Warten bis der Observer-Thread beendet ist"""
+        
         try:
             # Überprüfen, ob der Ordner existiert
             if os.path.exists(self.input_dir):
@@ -120,9 +121,6 @@ class Daemon:
                 self.jobs.append(new_job) #fügt den job des Liste jobs hinzu
                 print(f"Job {job_id} added.")
 
-    
-
-
 class CustomFileSystemEventHandler(FileSystemEventHandler):
     def __init__(self, daemon_instance):
         super().__init__()
@@ -132,11 +130,35 @@ class CustomFileSystemEventHandler(FileSystemEventHandler):
         if event.is_directory:
             print("event erkannt")
             return
-        elif event.event_type == 'created':
-            if event.src_path.endswith('.json'):#ruft die Methode process_json_file des Daemons auf
-                print(f"New JSON file detected: {event.src_path}")
-                self.daemon_instance.process_json_file(event.src_path)     
-            elif event.src_path.endswith('txt'):#ruft die Methode stop des Daemons auf
-                print("Stop token file detected. Stopping daemon.")
-                self.daemon_instance.stop() 
-   
+
+if __name__ == "__main__":
+
+    # use given arguments (cf commands/start.py)
+    area = sys.argv[1]
+    input_dir = sys.argv[2]
+
+    # Erstellen Sie den input_data-Ordner, wenn er nicht existiert
+    os.makedirs(input_dir, exist_ok=True)
+
+    # Instanziieren Sie den Daemon
+    daemon = Daemon(os.getenv("API_KEY"), 'DE', 'C:\git\electricity_usage\input_data')
+
+    # Starten Sie die run-Methode des Daemons in einem separaten Thread
+    daemon_thread = threading.Thread(target=daemon.run) #daemon=True darf nicht gesetzt werden
+    daemon_thread.start()
+
+    if daemon.observer.is_alive():
+        print("Observer aktiv")
+
+    # Erstellen Sie einige Beispiel-JSON-Dateien im input_data-Ordner
+    json_data_1 = { "estimate": 100, "deadline": "2023-12-31", "commandline": 'echo "test erfolgreich"'}
+    json_data_2 = { "estimate": 200, "deadline": "2023-12-31", "commandline": 'echo "test 2 erfolgreich"'}
+
+    with open("input_data/data1.json", "w") as file:
+        json.dump(json_data_1, file)
+
+    with open("input_data/data2.json", "w") as file:
+        json.dump(json_data_2, file)
+
+    time.sleep(60)
+#   daemon.stop()
