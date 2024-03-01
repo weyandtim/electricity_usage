@@ -1,6 +1,6 @@
 import click
 import os
-import platformdirs
+import threading
 from electricity_usage.commands.areas import codes
 from electricity_usage import data_dirs
 from electricity_usage import daemon
@@ -22,6 +22,3 @@ def start(area):
     daemon_thread = threading.Thread(target=daemon_instance.run) #daemon=True darf nicht gesetzt werden
     daemon_thread.start()
 
-    # Starten Sie die run-Methode des Daemons in einem separaten Thread
-    daemon_thread = threading.Thread(target=daemon_instance.run) #daemon=True darf nicht gesetzt werden
-    daemon_thread.start()
