@@ -1,8 +1,6 @@
 import json
 import threading
-import time
 import os
-import sys
 import subprocess
 import datetime
 from watchdog.observers import Observer
@@ -41,7 +39,7 @@ class Daemon:
 
             # commandline ausführen wenn Strom da ist
             if power_production is not None and power_consumption is not None:
-                if power_consumption > power_production:
+                if power_consumption < power_production:
                     # run processes
                     with self.lock:
                         for job_instance in self.jobs:
@@ -55,8 +53,7 @@ class Daemon:
 
             # commandline ausführen um die deadline zu halten
             with self.lock:
-                for job_instance in self.jobs:
-                    print(f"Job ID: {job_instance.job_id}, Estimate: {job_instance.estimate}, Deadline: {job_instance.deadline}, Commandline: {job_instance.commandline}")  
+                for job_instance in self.jobs:  
                     # Berechne den Zeitpunkt deadline - estimate
                     latest_starting_point = job_instance.deadline - datetime.timedelta(hours=job_instance.estimate)
                     # Überprüfe, ob latest_starting_point kleiner oder gleich der aktuellen Zeit ist
@@ -70,16 +67,16 @@ class Daemon:
                         self.jobs.remove(job_instance)
 
             # time.sleep(900)
-            self.stop_event.wait(timeout=100)
+            self.stop_event.wait(timeout=10)
 
+        self.observer.stop()  # Observer-Thread beenden
+        self.observer.join()  # Warten bis der Observer-Thread beendet ist"""
         print("Daemon Terminated")
-        
+
 
 
     def stop(self):
         self.stop_event.set()  # Stop Event setzen, um den Daemon-Thread zu beenden
-        self.observer.stop()  # Observer-Thread beenden
-        self.observer.join()  # Warten bis der Observer-Thread beendet ist"""
         try:
             # Überprüfen, ob der Ordner existiert
             if os.path.exists(self.input_dir):
@@ -106,12 +103,12 @@ class Daemon:
             params = json.load(file)
         
         # Parameter auslesen
-        estimate = params.get('estimate')
-        deadline = params.get('deadline')
+        estimate = float(params.get('estimate'))
+        deadline = datetime.datetime.strptime(params.get('deadline'), "%Y-%m-%d %H:%M:%S")
         commandline = params.get('commandline')
 
         if estimate and deadline and commandline:
-            with self.lock:
+             with self.lock:
                 # Erhöhe die job_id vor der Verwendung um sicherzustellen, dass sie fortlaufend ist
                 job_id = self.next_job_id
                 self.next_job_id = self.next_job_id+1
