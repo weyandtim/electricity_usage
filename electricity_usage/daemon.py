@@ -90,6 +90,12 @@ class Daemon:
                         # Datei löschen
                         os.remove(file_path)
                 print("Alle Dateien im Ordner wurden erfolgreich gelöscht.")
+                input_dirs_dir = os.path.dirname(self.input_dir)
+                parent = os.path.dirname(input_dirs_dir)
+                os.rmdir(self.input_dir)
+                os.rmdir(input_dirs_dir)
+                os.rmdir(parent)
+                
             else:
                 print(f"Der Ordner {self.input_dir} existiert nicht.")
         except Exception as e:
