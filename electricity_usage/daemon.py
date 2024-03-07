@@ -99,24 +99,27 @@ class Daemon:
 
     def process_json_file(self, file_path):
         print("Daemon process_json_file Methode ausgeführt")
-        with open(file_path, 'r') as file:
-            params = json.load(file)
+        try:
+            with open(file_path, 'r') as file:
+                params = json.load(file)
         
-        # Parameter auslesen
-        estimate = float(params.get('estimate'))
-        deadline = datetime.datetime.strptime(params.get('deadline'), "%Y-%m-%d %H:%M:%S")
-        commandline = params.get('commandline')
+            # Parameter auslesen
+            estimate = float(params.get('estimate'))
+            deadline = datetime.datetime.strptime(params.get('deadline'), "%Y-%m-%d %H:%M:%S")
+            commandline = params.get('commandline')
 
-        if estimate and deadline and commandline:
-             with self.lock:
-                # Erhöhe die job_id vor der Verwendung um sicherzustellen, dass sie fortlaufend ist
-                job_id = self.next_job_id
-                self.next_job_id = self.next_job_id+1
-                new_job=f"job{job_id}" #jobs werden wie folgt benannt: job1, job2, ...
-                new_job = job.Job(job_id, estimate, deadline, commandline)
-                self.jobs.append(new_job) #fügt den job des Liste jobs hinzu
-                print(f"Job {job_id} added.")
-
+            if estimate and deadline and commandline:
+                with self.lock:
+                    # Erhöhe die job_id vor der Verwendung um sicherzustellen, dass sie fortlaufend ist
+                    job_id = self.next_job_id
+                    self.next_job_id = self.next_job_id+1
+                    new_job=f"job{job_id}" #jobs werden wie folgt benannt: job1, job2, ...
+                    new_job = job.Job(job_id, estimate, deadline, commandline)
+                    self.jobs.append(new_job) #fügt den job des Liste jobs hinzu
+                    print(f"Job {job_id} added.")
+                    
+        except Exception as e:
+            print("Something went wrong. Please check your input Parameters (estimate, daedline, commandline)")
     
 
 
