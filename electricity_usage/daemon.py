@@ -1,8 +1,6 @@
 import json
 import threading
-import time
 import os
-import sys
 import subprocess
 import datetime
 from watchdog.observers import Observer
@@ -55,8 +53,7 @@ class Daemon:
 
             # commandline ausführen um die deadline zu halten
             with self.lock:
-                for job_instance in self.jobs:
-                    print(f"Job ID: {job_instance.job_id}, Estimate: {job_instance.estimate}, Deadline: {job_instance.deadline}, Commandline: {job_instance.commandline}")  
+                for job_instance in self.jobs:  
                     # Berechne den Zeitpunkt deadline - estimate
                     latest_starting_point = job_instance.deadline - datetime.timedelta(hours=job_instance.estimate)
                     # Überprüfe, ob latest_starting_point kleiner oder gleich der aktuellen Zeit ist
@@ -70,17 +67,16 @@ class Daemon:
                         self.jobs.remove(job_instance)
 
             # time.sleep(900)
-            self.stop_event.wait(timeout=100)
+            self.stop_event.wait(timeout=10)
 
+        self.observer.stop()  # Observer-Thread beenden
+        self.observer.join()  # Warten bis der Observer-Thread beendet ist"""
         print("Daemon Terminated")
-        
+
 
 
     def stop(self):
         self.stop_event.set()  # Stop Event setzen, um den Daemon-Thread zu beenden
-        self.observer.stop()  # Observer-Thread beenden
-        self.observer.join()  # Warten bis der Observer-Thread beendet ist"""
-        
         try:
             # Überprüfen, ob der Ordner existiert
             if os.path.exists(self.input_dir):
@@ -94,6 +90,12 @@ class Daemon:
                         # Datei löschen
                         os.remove(file_path)
                 print("Alle Dateien im Ordner wurden erfolgreich gelöscht.")
+                input_dirs_dir = os.path.dirname(self.input_dir)
+                parent = os.path.dirname(input_dirs_dir)
+                os.rmdir(self.input_dir)
+                os.rmdir(input_dirs_dir)
+                os.rmdir(parent)
+                
             else:
                 print(f"Der Ordner {self.input_dir} existiert nicht.")
         except Exception as e:
@@ -107,12 +109,12 @@ class Daemon:
             params = json.load(file)
         
         # Parameter auslesen
-        estimate = params.get('estimate')
-        deadline = params.get('deadline')
+        estimate = float(params.get('estimate'))
+        deadline = datetime.datetime.strptime(params.get('deadline'), "%Y-%m-%d %H:%M:%S")
         commandline = params.get('commandline')
 
         if estimate and deadline and commandline:
-            with self.lock:
+             with self.lock:
                 # Erhöhe die job_id vor der Verwendung um sicherzustellen, dass sie fortlaufend ist
                 job_id = self.next_job_id
                 self.next_job_id = self.next_job_id+1
@@ -120,6 +122,9 @@ class Daemon:
                 new_job = job.Job(job_id, estimate, deadline, commandline)
                 self.jobs.append(new_job) #fügt den job des Liste jobs hinzu
                 print(f"Job {job_id} added.")
+
+    
+
 
 class CustomFileSystemEventHandler(FileSystemEventHandler):
     def __init__(self, daemon_instance):
@@ -130,35 +135,11 @@ class CustomFileSystemEventHandler(FileSystemEventHandler):
         if event.is_directory:
             print("event erkannt")
             return
-
-if __name__ == "__main__":
-
-    # use given arguments (cf commands/start.py)
-    area = sys.argv[1]
-    input_dir = sys.argv[2]
-
-    # Erstellen Sie den input_data-Ordner, wenn er nicht existiert
-    os.makedirs(input_dir, exist_ok=True)
-
-    # Instanziieren Sie den Daemon
-    daemon = Daemon(os.getenv("API_KEY"), 'DE', 'C:\git\electricity_usage\input_data')
-
-    # Starten Sie die run-Methode des Daemons in einem separaten Thread
-    daemon_thread = threading.Thread(target=daemon.run) #daemon=True darf nicht gesetzt werden
-    daemon_thread.start()
-
-    if daemon.observer.is_alive():
-        print("Observer aktiv")
-
-    # Erstellen Sie einige Beispiel-JSON-Dateien im input_data-Ordner
-    json_data_1 = { "estimate": 100, "deadline": "2023-12-31", "commandline": 'echo "test erfolgreich"'}
-    json_data_2 = { "estimate": 200, "deadline": "2023-12-31", "commandline": 'echo "test 2 erfolgreich"'}
-
-    with open("input_data/data1.json", "w") as file:
-        json.dump(json_data_1, file)
-
-    with open("input_data/data2.json", "w") as file:
-        json.dump(json_data_2, file)
-
-    time.sleep(60)
-#   daemon.stop()
+        elif event.event_type == 'created':
+            if event.src_path.endswith('.json'):#ruft die Methode process_json_file des Daemons auf
+                print(f"New JSON file detected: {event.src_path}")
+                self.daemon_instance.process_json_file(event.src_path)     
+            elif event.src_path.endswith('txt'):#ruft die Methode stop des Daemons auf
+                print("Stop token file detected. Stopping daemon.")
+                self.daemon_instance.stop() 
+   

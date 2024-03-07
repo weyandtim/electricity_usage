@@ -16,17 +16,11 @@ def generate_filename():
     return f"{time}_{rand}.json"
 
 @click.command()
-@click.option('--estimate', type=float, help='estimated runtime of the program in hours') 
-@click.option('--deadline', type=click.DateTime(formats=['%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S']), help='latest date when the program should be finished')
-#@click.option('--area',type=click.Choice(codes), default=None, help="area code according to codes provided in areas command")
-@click.option('--commandline', type=str, help='the command line to be executed')
+@click.option('--estimate', type=float, help='estimated runtime of the program in hours', required=True)
+@click.option('--deadline', type=click.DateTime(formats=['%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S']), help='latest date when the program should be finished', required=True)
+@click.option('--commandline', type=str, help='the command line to be executed', required=True)
 
-def run(estimate,deadline,commandline): #später zusätzlich area einfügen um mehrere Daemon input_directorys unterscheiden zu können
-    '''if area:
-        input_dir = os.path.join(input_data_directory, f'input_dir_{area}')
-    else:
-        print('Please specify an area when more than one daemon is in use.')
-        return'''
+def run(estimate,deadline,commandline): 
     if deadline.time() == datetime.min.time():  # Wenn die Uhrzeit nicht im Parameter enthalten ist
         deadline = deadline.replace(hour=0, minute=0, second=0)  # Setze die Uhrzeit auf 00:00:00
 
