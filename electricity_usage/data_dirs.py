@@ -1,62 +1,56 @@
 import os
 import platformdirs
 
-
-#erstellt einen input_dir Ordner zur Kommunikation mit dem Daemon
+# Creates an input_dir folder for communication with the Daemon
 def create_input_dir_path():
-    # Verzeichnis für Anwendungsdaten erhalten
+    # Get directory for application data
     data_dir = platformdirs.user_data_dir(appname='electricity_usage')
 
-
-    # electricity_usage Verzeichnis erstellen, wenn es nicht existiert
+    # Create electricity_usage directory if it doesn't exist
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
 
-    # input_dirs Verzeichnis erstellen, wenn es nicht existiert
+    # Create input_dirs directory if it doesn't exist
     input_dirs_dir = os.path.join(data_dir, 'input_dirs')
     if not os.path.exists(input_dirs_dir):
         os.makedirs(input_dirs_dir)
 
-    # input_dir im input_dirs Verzeichnis erstellen, wenn es nicht existiert
+    # Create input_dir in the input_dirs directory if it doesn't exist
     input_dir = os.path.join(input_dirs_dir, 'input_dir')
     if not os.path.exists(input_dir):
         os.makedirs(input_dir)
     return input_dir
 
-
-#input dir ordner für mehrere Daemons (Benennung nach area)
+# Input directory folder for multiple Daemons (named after area)
 '''def create_input_dir_path(area):
-    # Verzeichnis für Anwendungsdaten erhalten
+    # Get directory for application data
     data_dir = platformdirs.user_data_dir(appname='electricity_usage')
 
-    # electricity_usage Verzeichnis erstellen, wenn es nicht existiert
+    # Create electricity_usage directory if it doesn't exist
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
 
-    # input_dirs Verzeichnis erstellen, wenn es nicht existiert
+    # Create input_dirs directory if it doesn't exist
     input_dirs_dir = os.path.join(data_dir, 'input_dirs')
     if not os.path.exists(input_dirs_dir):
         os.makedirs(input_dirs_dir)
 
-    # input_dir im input_dirs Verzeichnis erstellen, wenn es nicht existiert
+    # Create input_dir in the input_dirs directory if it doesn't exist
     input_dir = os.path.join(input_dirs_dir, f'input_dir_{area}')
     if not os.path.exists(input_dir):
         os.makedirs(input_dir)
 
     return input_dir'''
 
-
-# gibt den Pfad zum input_dir Ordner zurück 
+# Returns the path to the input_dir folder
 def get_input_dir_path():
-
-    # Verzeichnis für Anwendungsdaten erhalten
+    # Get directory for application data
     data_dir = platformdirs.user_data_dir(appname='electricity_usage')
 
-    # input_dirs Verzeichnis erstellen
+    # Create input_dirs directory
     input_dirs_dir = os.path.join(data_dir, 'input_dirs')
 
-    # input_dir im input_dirs Verzeichnis erstellen
+    # Create input_dir in the input_dirs directory
     input_dir = os.path.join(input_dirs_dir, 'input_dir')
 
     return input_dir
-

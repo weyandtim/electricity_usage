@@ -7,8 +7,10 @@ from datetime import datetime
 from electricity_usage.commands.areas import codes
 from electricity_usage import data_dirs 
 
-input_data_directory = data_dirs.get_input_dir_path()
+# the run command is used to create new jobs, 
+# it saves its parameters to an input directory which is subsequently processed by the daemon
 
+input_data_directory = data_dirs.get_input_dir_path()
 
 def generate_filename():
     rand = ''.join(random.choice(string.ascii_letters) for _ in range(16))
@@ -18,18 +20,11 @@ def generate_filename():
 @click.command()
 @click.option('--estimate', type=float, help='estimated runtime of the program in hours') 
 @click.option('--deadline', type=click.DateTime(formats=['%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S']), help='latest date when the program should be finished')
-#@click.option('--area',type=click.Choice(codes), default=None, help="area code according to codes provided in areas command")
 @click.option('--commandline', type=str, help='the command line to be executed')
 
-def run(estimate,deadline,commandline): #später zusätzlich area einfügen um mehrere Daemon input_directorys unterscheiden zu können
-    '''if area:
-        input_dir = os.path.join(input_data_directory, f'input_dir_{area}')
-    else:
-        print('Please specify an area when more than one daemon is in use.')
-        return'''
-    if deadline.time() == datetime.min.time():  # Wenn die Uhrzeit nicht im Parameter enthalten ist
-        deadline = deadline.replace(hour=0, minute=0, second=0)  # Setze die Uhrzeit auf 00:00:00
-
+def run(estimate,deadline,commandline):
+    if deadline.time() == datetime.min.time():  # if dedline doesn't include time
+        deadline = deadline.replace(hour=0, minute=0, second=0)  # set time to 00:00:00
     
     deadline_str = deadline.strftime("%Y-%m-%d %H:%M:%S")
     data = {
