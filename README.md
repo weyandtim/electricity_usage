@@ -7,11 +7,15 @@
 
 ## Installation
 
-The Python package `electricity_usage` can be installed from PyPI:
+The Python package `electricity_usage` can be installed by cloning the git repository and installing it using pip install.
 
 ```
-python -m pip install electricity_usage
+git clone https://github.com/weyandtim/electricity_usage
+pip install electricity_usage
 ```
+<!-- Hier muss auf jeden Fall noch eine Beschreibung wie der Spaß mit dem AP key funktioniert! -->
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Development installation
 
@@ -30,6 +34,23 @@ Having done so, the test suite can be run using `pytest`:
 python -m pytest
 ```
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Usage
+
+The electricity\_usage package provides a scheduler which will kick off processes only when there is a surplus inre is a surplus in local energy production.  
+For more information see the usage documentation.
+<!-- usage should be linked properly here, if possible -->
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Contributing
+
+This project was done as a software practical by Tim Weyand and Nemo Glade.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Acknowledgments
 
 This repository was set up using the [SSC Cookiecutter for Python Packages](https://github.com/ssciwr/cookiecutter-python-package).
+The project relies on data from [electricity maps](https://github.com/electricitymaps/electricitymaps-contrib).

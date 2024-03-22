@@ -4,7 +4,6 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'electricity_usage'
@@ -22,7 +21,13 @@ extensions = [
     "sphinx_mdinclude",
     "sphinx.ext.autodoc",
     "sphinx_rtd_theme",
+    "sphinx_click"
 ]
+
+# Modifying sy.path for click doc
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../electricity_usage'))
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = []

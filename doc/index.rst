@@ -5,9 +5,12 @@ electricity_usage
    :maxdepth: 2
    :caption: Contents:
 
-   intro
-   demo
-   api
+   Introduction <intro>
+   Usage <usage>
+   Click CLI <click>
+   API use <api>
+   Licensing <license>
+
 
 Indices and tables
 ==================

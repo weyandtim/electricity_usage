@@ -5,7 +5,7 @@ import json
 import click
 from electricity_usage.commands import areas, queue, run, start, stop
 
-@click.group(help='This is a tool to schedule a process to start when there is a local energy production surplus.')
+@click.group(help='This is a tool to schedule one or multiple processes to start when there is a local energy production surplus.\n')
 def cli():
    pass
 cli.add_command(areas.areas)
