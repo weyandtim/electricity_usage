@@ -6,7 +6,7 @@ electricity_usage
    :caption: Contents:
 
    intro
-   demo
+   usage
    api
 
 Indices and tables
