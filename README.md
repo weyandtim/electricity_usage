@@ -38,7 +38,7 @@ python -m pytest
 
 ## Usage
 
-The electricity\_usage package provides a scheduler which will kick off processes only when there is a surplus inre is a surplus in local energy production.  
+The electricity\_usage package provides a scheduler which will kick off processes only when there is a surplus in local energy production.  
 For more information see the usage documentation.
 <!-- usage should be linked properly here, if possible -->
 
@@ -46,11 +46,12 @@ For more information see the usage documentation.
 
 ## Contributing
 
-This project was done as a software practical by Tim Weyand and Nemo Glade.
+This project was done as a software practical by Tim Weyand and Nemo Glade, under supervision of Dominic Kempf.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Acknowledgments
 
 This repository was set up using the [SSC Cookiecutter for Python Packages](https://github.com/ssciwr/cookiecutter-python-package).
+
 The project relies on data from [electricity maps](https://github.com/electricitymaps/electricitymaps-contrib).

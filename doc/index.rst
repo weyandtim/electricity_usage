@@ -1,3 +1,5 @@
+.. _index-ref:
+
 electricity_usage
 =================
 

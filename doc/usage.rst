@@ -1,2 +1,6 @@
+.. _usage-ref:
+
 Usage
 =======
+
+

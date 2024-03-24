@@ -6,7 +6,7 @@ from electricity_usage import data_dirs
 from electricity_usage import daemon
 
 @click.command()
-@click.option('--area',type=click.Choice(codes), default='DE', help="area code according to 'electricity_usage areas'")
+@click.option('--area',type=click.Choice(codes), default='DE', help="area code corresponding to the local area as shown by 'electricity_usage areas'")
 
 def start(area):
     '''starts the tool background process (demon)'''
