@@ -18,5 +18,5 @@ The intended use of ``electricity_usage`` is as follows:
     - ``--commandline`` <string>
    For a more detailed description, see :ref:`click-ref`
 
-3. To stop the tool and abandon all queued jobs, use ``stop``
+3. To stop the tool and abandon all queued jobs, use ``stop``.
 

@@ -13,9 +13,10 @@ The Python package `electricity_usage` can be installed by cloning the git repos
 git clone https://github.com/weyandtim/electricity_usage
 pip install electricity_usage
 ```
-<!-- Hier muss auf jeden Fall noch eine Beschreibung wie der Spaß mit dem AP key funktioniert! -->
+For the full use of this package you will also need a subscription to ElectricityMaps. Instructions on how to get and use the token you need can be found in :ref:`api-ref`.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<!-- @Tim kann sein dass das nicht reicht, deine Entscheidung -->
+
 
 ## Development installation
 
@@ -34,7 +35,6 @@ Having done so, the test suite can be run using `pytest`:
 python -m pytest
 ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Usage
 
@@ -42,7 +42,6 @@ The electricity\_usage package provides a scheduler which will kick off processe
 For more information see the usage documentation.
 <!-- usage should be linked properly here, if possible -->
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contributing
 
@@ -50,7 +49,6 @@ This project was done as a software practical by Tim Weyand and Nemo Glade, unde
 
 If you wish to contribute to electricity\_usage open an issue in the issue tracker of the [GitHub project](https://github.com/weyandtim/electricity_usage/issues).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Acknowledgments
 
