@@ -3,16 +3,45 @@
 Click CLI
 =============
 
-The :program:`electricity_usage` command accepts the following subcommands: ``start``, ``stop``, ``run``, ``areas``, ``queue``. If none of these are used, the command does nothing.
+The :program:`electricity_usage` command accepts the following subcommands: ``start``, ``stop``, ``run``, ``areas``, ``queue``. If none of these are used, the program defaults to the ``--help`` option.
 
-   .. click:: electricity_usage.__main__:cli
+.. click:: electricity_usage.__main__:cli
     :prog: electricity_usage
+    :nested: short
+
+Subcommands
+--------------------------------------
+
+.. click:: electricity_usage.commands.start:start
+    :prog: start
+    :nested: none
+
+.. click:: electricity_usage.commands.run:run
+    :prog: run
     :nested: full
 
-The options for :option:`area` correspond to the area codes used by the Electricity Maps API.
+:option:`--estimate` accepts an ``int``
 
-Provided Areas
--------------------
+:option:`--deadline` accepts dates and timestamps in the following formats: '%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S' 
+
+:option:`--commandline` accepts a ``string``, which will be executed as a shell command
+
+.. click:: electricity_usage.commands.stop:stop
+    :prog: stop
+    :nested: full
+
+.. click:: electricity_usage.commands.queue:queue
+    :prog: queue
+    :nested: full
+
+.. click:: electricity_usage.commands.areas:areas
+    :prog: areas
+    :nested: full
+
+The options for :option:`--area` correspond to the area codes used by the Electricity Maps API.
+
+Areas as provided by ElectricityMaps
+-----------------------------------------------------------------------
 
 .. list-table:: Area Codes and corresponding area as provided by Electricity Maps
    :widths: 25 75
