@@ -1,16 +1,15 @@
 import click
 import os
-from electricity_usage.data_dirs import get_input_dir_path
 
 @click.command()
 
 def queue():
     '''shows a list of processes in queue'''
-    main = get_input_dir_path()
+    here = os.path.dirname(os.path.abspath(__file__))
+    main = os.path.join(here, '../input_data')
     dirs = os.listdir(main)
-    print("Currently queued processes:\n")
     for d in dirs:
-        print(d+':')
+        print('For Subdirectory '+d+':\n')
         path_to_dir = os.path.join(main,d)
         files = [f for f in listdir(path_to_dir) if isfile(join(path_to_dir, f))]
         for f in files:
@@ -19,4 +18,5 @@ def queue():
             #    print(f, c)
             print(f)
         print("\n")
+
     

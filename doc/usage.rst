@@ -28,4 +28,4 @@ it provides the following commands:
     - The "areas" command retrieves a list of available area keys.
 
 * ``electricity_usage queue``
-    - The "queue" command retrieves a list of jobs in queue
+   - The "queue" command retrieves a list of jobs in queue

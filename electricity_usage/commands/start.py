@@ -1,9 +1,12 @@
 import click
 import os
+import platformdirs
 import threading
 from electricity_usage.commands.areas import codes
 from electricity_usage import data_dirs
 from electricity_usage import daemon
+
+# the start command creates a daemon instance and starts its run method as a daemon process
 
 @click.command()
 @click.option('--area',type=click.Choice(codes), default='DE', help="area code corresponding to the local area as shown by 'electricity_usage areas'. The default value for this is 'DE corresponding to Germany")
@@ -17,5 +20,6 @@ def start(area):
 
     # start daemon.run in seperate thread
     daemon_thread = threading.Thread(target=daemon_instance.run) 
+
     daemon_thread.start()
 
