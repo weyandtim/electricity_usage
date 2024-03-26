@@ -13,6 +13,10 @@ def queue():
         path_to_dir = os.path.join(main,d)
         files = [f for f in listdir(path_to_dir) if isfile(join(path_to_dir, f))]
         for f in files:
+            #with open(f) as j:
+            #    c = j.commandline
+            #    print(f, c)
             print(f)
-            # add-on to print commandline as well as filename would be cool
+        print("\n")
+
     

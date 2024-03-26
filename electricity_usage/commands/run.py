@@ -23,6 +23,7 @@ def generate_filename():
 @click.option('--commandline', type=str, help='the command line to be executed', required=True)
 
 def run(estimate,deadline,commandline): 
+    '''adds a process to the queue. this can only be done after electricity usage has been started'''
     if deadline.time() == datetime.min.time():  # Wenn die Uhrzeit nicht im Parameter enthalten ist
         deadline = deadline.replace(hour=0, minute=0, second=0)  # Setze die Uhrzeit auf 00:00:00
     
