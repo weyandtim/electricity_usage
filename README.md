@@ -13,7 +13,7 @@ The Python package `electricity_usage` can be installed by cloning the git repos
 git clone https://github.com/weyandtim/electricity_usage
 pip install electricity_usage
 ```
-For the full use of this package you will also need a subscription to ElectricityMaps. Instructions on how to get and use the token you need can be found in :ref:`api-ref`.
+For the full use of this package you will also need a subscription to Electricity Maps. Instructions on how to get and use the token you need can be found in :ref:`api-ref`.
 
 <!-- @Tim kann sein dass das nicht reicht, deine Entscheidung -->
 

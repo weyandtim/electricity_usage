@@ -15,13 +15,13 @@ In order to use electricity_usage properly you are required to
 get the personal free tier subscription of Electricity Maps
 which can be obtained here `<https://api-portal.electricitymaps.com/>`_
 
-For more informaion on how to set up electricity_usage view instalation
+For more informaion on how to set up electricity_usage view installation.
 
 
 How does electricity Maps work:
 -------------------------------
 
-On subscribing to electricity Maps you will be granted a authentification token 
+On subscribing to Electricity Maps you will be granted a authentification token 
 it is used along with an area Code such as 'DE' for Germany to retriev detailed data about 
 area speciffic electricity consumption and production.
 

@@ -40,7 +40,7 @@ Subcommands
 
 The options for :option:`--area` correspond to the area codes used by the Electricity Maps API.
 
-Areas as provided by ElectricityMaps
+Areas as provided by Electricity Maps
 -----------------------------------------------------------------------
 
 .. list-table:: Area Codes and corresponding area as provided by Electricity Maps
