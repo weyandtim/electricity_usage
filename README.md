@@ -48,6 +48,8 @@ For more information see the usage documentation.
 
 This project was done as a software practical by Tim Weyand and Nemo Glade, under supervision of Dominic Kempf.
 
+If you wish to contribute to electricity\_usage open an issue in the issue tracker of the [GitHub project](https://github.com/weyandtim/electricity_usage/issues).
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Acknowledgments
