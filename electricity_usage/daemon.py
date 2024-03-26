@@ -93,6 +93,12 @@ class Daemon:
                         # Delete file
                         os.remove(file_path)
                 print("All files in the folder have been deleted successfully.")
+                input_dirs_dir = os.path.dirname(self.input_dir)
+                parent = os.path.dirname(input_dirs_dir)
+                os.rmdir(self.input_dir)
+                os.rmdir(input_dirs_dir)
+                os.rmdir(parent)
+                
             else:
                 print(f"The folder {self.input_dir} does not exist.")
         except Exception as e:
