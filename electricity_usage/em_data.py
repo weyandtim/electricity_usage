@@ -1,6 +1,7 @@
 import requests
 import os
 
+# This method utilizes the zone and API_KEY to retrieve information from the electricity maps API.
 def get_power_data(zone, API_KEY):
     url = f"https://api.electricitymap.org/v3/power-breakdown/latest?zone={zone}"
     headers = {

@@ -7,8 +7,10 @@ from datetime import datetime
 from electricity_usage.commands.areas import codes
 from electricity_usage import data_dirs 
 
-input_data_directory = data_dirs.get_input_dir_path()
+# the run command is used to create new jobs, 
+# it saves its parameters to an input directory which is subsequently processed by the daemon
 
+input_data_directory = data_dirs.get_input_dir_path()
 
 def generate_filename():
     rand = ''.join(random.choice(string.ascii_letters) for _ in range(16))
@@ -23,7 +25,6 @@ def generate_filename():
 def run(estimate,deadline,commandline): 
     if deadline.time() == datetime.min.time():  # Wenn die Uhrzeit nicht im Parameter enthalten ist
         deadline = deadline.replace(hour=0, minute=0, second=0)  # Setze die Uhrzeit auf 00:00:00
-
     
     deadline_str = deadline.strftime("%Y-%m-%d %H:%M:%S")
     data = {
