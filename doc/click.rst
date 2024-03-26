@@ -1,7 +1,7 @@
 .. _click-ref:
 
 Click CLI
-=============
+=====================================
 
 The :program:`electricity_usage` command accepts the following subcommands: ``start``, ``stop``, ``run``, ``areas``, ``queue``. If none of these are used, the program defaults to the ``--help`` option.
 
@@ -15,6 +15,8 @@ Subcommands
 .. click:: electricity_usage.commands.start:start
     :prog: start
     :nested: none
+
+The options for :option:`--area` correspond to the area codes used by the Electricity Maps API.
 
 .. click:: electricity_usage.commands.run:run
     :prog: run
@@ -37,8 +39,6 @@ Subcommands
 .. click:: electricity_usage.commands.areas:areas
     :prog: areas
     :nested: full
-
-The options for :option:`--area` correspond to the area codes used by the Electricity Maps API.
 
 Areas as provided by Electricity Maps
 -----------------------------------------------------------------------

@@ -53,5 +53,4 @@ If you wish to contribute to electricity\_usage open an issue in the issue track
 ## Acknowledgments
 
 This repository was set up using the [SSC Cookiecutter for Python Packages](https://github.com/ssciwr/cookiecutter-python-package).
-
-The project relies on data from [electricity maps](https://github.com/electricitymaps/electricitymaps-contrib).
+The project relies on data from [Electricity Maps](https://github.com/electricitymaps/electricitymaps-contrib).

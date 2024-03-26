@@ -5,6 +5,8 @@ How to use electricity_usage
 
 ``electricity_usage`` is used via commandline interface made with `click <https://pypi.org/project/click/>`_. The command documentation can be found in :ref:`click-ref`
 
+Functional subcommands
+-------------------------------------
 The intended use of ``electricity_usage`` is as follows:
 
 1. Start the tool using the subcommand ``electricity_usage start [OPTION]``
@@ -19,9 +21,10 @@ The intended use of ``electricity_usage`` is as follows:
 
    For a more detailed description, see :ref:`click-ref`
 
-3. To stop the tool and abandon all queued jobs, use ``electricity_usage stop``.
+3. **To stop the tool and abandon all queued jobs, use** ``electricity_usage stop``.
 
-Optional uses:
+Optional Subcommands
+-----------------------------------
 
 * With the ``electricity_usage areas`` command you can see a list of all provided area codes. 
 * With the ``electricity_usage queue`` command you can see a list of all jobs currently in the queue.
