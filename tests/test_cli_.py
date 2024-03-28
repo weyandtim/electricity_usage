@@ -37,8 +37,9 @@ def test_queue_command(runner):
 
 
 ######  start  ######
-def test_start_command_default(runner):
-    result = runner.invoke(cli, ['start'])
+def test_start_command_default(runner, daemon_instance):
+    result = runner.invoke(cli, ['start'], ['daemon_instance', daemon_instance])
+    
     assert result.exit_code == 0
 
 def test_start_command_with_valid_area(runner):
