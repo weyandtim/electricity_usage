@@ -4,6 +4,7 @@ import os
 import random
 import string
 from datetime import datetime
+from pytimeparse import parse
 from electricity_usage.commands.area_codes import codes
 from electricity_usage import data_dirs 
 
@@ -17,8 +18,17 @@ def generate_filename():
     time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     return f"{time}_{rand}.json"
 
+def validate_estimate(ctx, param, estimate):
+    check = parse(estimate)
+    if type(check) == int:
+        return estimate
+    raise click.BadParameter(f"estimatre must be in a format accepted by pytimeparse. See https://github.com/wroberts/pytimeparse for more information. Your input {estimate} was not accepted.")
+
+
 @click.command()
-@click.option('--estimate', type=float, help='estimated runtime of the program in hours', required=True)
+@click.option('--estimate', type=str,required=True, callback=validate_estimate,
+        help='estimated runtime of the program in any format as accepted by the pytimeparse package. For more information on the formatting, see https://github.com/wroberts/pytimeparse.'
+        )
 @click.option('--deadline', type=click.DateTime(formats=['%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S']), help='latest date when the program should be finished', required=True)
 @click.option('--commandline', type=str, help='the command line to be executed', required=True)
 
