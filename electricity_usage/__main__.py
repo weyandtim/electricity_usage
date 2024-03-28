@@ -3,13 +3,13 @@
 from datetime import date, datetime
 import json
 import click
-from electricity_usage.commands import areas, queue, run, start, stop
+from electricity_usage.commands import areas, status, run, start, stop
 
 @click.group(help='This is a tool to schedule one or multiple processes to start when there is a local energy production surplus.\n')
 def cli():
    pass
 cli.add_command(areas.areas)
-cli.add_command(queue.queue)
+cli.add_command(status.status)
 cli.add_command(run.run)
 cli.add_command(start.start)
 cli.add_command(stop.stop)

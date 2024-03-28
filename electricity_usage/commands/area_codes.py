@@ -397,3 +397,9 @@ areas_str = [
 "ZM  =  Zambia",
 "ZW  =  Zimbabwe",
 ]
+
+# build list of codes to choose from
+codes = []
+for a in areas_str:
+    codes.append(a.split()[0])
+

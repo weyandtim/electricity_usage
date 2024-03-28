@@ -2,7 +2,7 @@ import click
 import os
 import platformdirs
 import threading
-from electricity_usage.commands.areas import codes
+from electricity_usage.commands.area_codes import codes
 from electricity_usage import data_dirs
 from electricity_usage import daemon
 
@@ -16,7 +16,7 @@ def start(area):
     # build directory for daemon communication
     data_dir = data_dirs.create_input_dir_path()
     # create daemon instance
-    daemon_instance = daemon.Daemon(os.getenv("API_KEY"), area, data_dir)
+    daemon_instance = daemon.Daemon(os.getenv("EM_API_KEY"), area, data_dir)
 
     # start daemon.run in seperate thread
     daemon_thread = threading.Thread(target=daemon_instance.run) 

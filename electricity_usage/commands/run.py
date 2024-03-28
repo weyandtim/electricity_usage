@@ -4,7 +4,7 @@ import os
 import random
 import string
 from datetime import datetime
-from electricity_usage.commands.areas import codes
+from electricity_usage.commands.area_codes import codes
 from electricity_usage import data_dirs 
 
 # the run command is used to create new jobs, 
