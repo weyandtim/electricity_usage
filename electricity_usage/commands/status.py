@@ -21,6 +21,10 @@ def status(area):
     if(area!=None):
         print("Electricity Maps Info:")
         prod, con = get_power_data(area, os.getenv("EM_API_KEY"))
-        print("Power Production:", prod, "\nPower Consuption:", con, "\nDifference:", prod-con)
+        if prod!=None and con!=None:
+            print("Your connection to Electricity Maps is working and the current data is as follows:")
+            print("Power Production:", prod, "\nPower Consuption:", con, "\nDifference:", prod-con)
+        else:
+            raise Exception("Something went wrong with your connection to Electricity Maps. Please check your API key.")
 
     
