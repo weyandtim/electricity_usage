@@ -2,12 +2,7 @@ import click
 import os
 from ..em_data import get_power_data
 from ..data_dirs import get_input_dir_path
-from .area_codes import codes
-
-def validate_code(ctx, param, area):
-    if (area in codes) or (area==None):
-        return area
-    raise click.BadParameter("Area Code must be in the list of provided codes, not {area}")
+from .area_codes import codes, validate_code
 
 @click.command()
 @click.option("--area", type=str, required=False, callback=validate_code, help="If you wish to check the status of your connection to the Electricity Maps API, enter your area code and it will be provided for you.")
@@ -26,6 +21,10 @@ def status(area):
     if(area!=None):
         print("Electricity Maps Info:")
         prod, con = get_power_data(area, os.getenv("EM_API_KEY"))
-        print("Power Production:", prod, "\nPower Consuption:", con, "\nDifference:", prod-con)
+        if prod!=None and con!=None:
+            print("Your connection to Electricity Maps is working and the current data is as follows:")
+            print("Power Production:", prod, "\nPower Consuption:", con, "\nDifference:", prod-con)
+        else:
+            raise Exception("Something went wrong with your connection to Electricity Maps. Please check your API key.")
 
     

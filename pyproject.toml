@@ -16,7 +16,7 @@ version = "0.1.0"
 description = "The electricity_usage package provides a scheduler which will kick off processes only when there is a surplus in local energy production. \nFor more information see the usage documentation."
 readme = "README.md"
 maintainers = [
-    { name = "Tim", email = "" },
+    { name = "Tim" },
     { name = "Nemo", email = "nemo24751@gmail.com" },
 ]
 requires-python = ">=3.8"
