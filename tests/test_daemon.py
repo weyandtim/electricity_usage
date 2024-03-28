@@ -137,10 +137,10 @@ def test_stop_removes_txtfiles(daemon_instance):
 
     # Rufe die stop() Methode auf, um die Dateien zu löschen
     daemon_instance.stop()
-
-    # Überprüfe, ob alle Dateien im Eingabeverzeichnis gelöscht wurden
-    assert len(os.listdir(daemon_instance.input_dir)) == 0
-
+    time.sleep(1) #gibt dem Daemon Zeit die stopmethode auszuführen
+    # Überprüfe, ob input_dir gelöscht wurde und damit auch alle txt files
+    assert not os.path.exists(daemon_instance.input_dir)
+    
 
 def test_stop_remove_jsonfiles(daemon_instance, create_accepted_json_files):
     accepted_data = [
@@ -163,9 +163,9 @@ def test_stop_remove_jsonfiles(daemon_instance, create_accepted_json_files):
             json.dump(data, json_file)
         
     daemon_instance.stop()
-
-    # Überprüfe, ob alle Dateien im Eingabeverzeichnis gelöscht wurden
-    assert len(os.listdir(daemon_instance.input_dir)) == 0
+    time.sleep(1)
+    # Überprüfe, ob input dir und damit auch alle json files gelöscht wurden
+    assert not os.path.exists(daemon_instance.input_dir)
 
 
 ### testing Observer calls Method ###
