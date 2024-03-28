@@ -1,6 +1,7 @@
 import pytest
 import json
 import os
+import platformdirs
 from unittest.mock import MagicMock
 from unittest.mock import patch
 from electricity_usage import data_dirs
@@ -11,9 +12,26 @@ def mock_em_data():
         yield mock_get_power_data
 
 @pytest.fixture
-def daemon_instance():
+def create_temp_input_dir_path():
+    # Get directory for application data
+    data_dir = platformdirs.user_data_dir(appname='electricity_usage')
+    # Create electricity_usage directory if it doesn't exist
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+    # Create input_dirs directory if it doesn't exist
+    input_dirs = os.path.join(data_dir, 'temp_input_dirs')
+    if not os.path.exists(input_dirs):
+        os.makedirs(input_dirs)
+    # Create input_dir in the input_dirs directory if it doesn't exist
+    input_dir = os.path.join(input_dirs, 'temp_input_dir')
+    if not os.path.exists(input_dir):
+        os.makedirs(input_dir)
+    return input_dir
+
+@pytest.fixture
+def daemon_instance(create_temp_input_dir_path):
     from electricity_usage.daemon import Daemon
-    daemon = Daemon(em_API_key='dummy_key', area='DE', input_dir=data_dirs.create_input_dir_path())
+    daemon = Daemon(em_API_key='dummy_key', area='DE', input_dir=create_temp_input_dir_path)
     yield daemon
     daemon.stop()
 
