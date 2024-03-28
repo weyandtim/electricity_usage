@@ -24,8 +24,8 @@ def generate_filename():
 
 def run(estimate,deadline,commandline): 
     '''adds a process to the queue. this can only be done after electricity usage has been started'''
-    if deadline.time() == datetime.min.time():  # Wenn die Uhrzeit nicht im Parameter enthalten ist
-        deadline = deadline.replace(hour=0, minute=0, second=0)  # Setze die Uhrzeit auf 00:00:00
+    if deadline.time() == datetime.min.time():  # In case the deadline is just a date without a specific time set
+        deadline = deadline.replace(hour=0, minute=0, second=0)  # Set time as 00:00:00
     
     deadline_str = deadline.strftime("%Y-%m-%d %H:%M:%S")
     data = {
