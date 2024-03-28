@@ -8,15 +8,9 @@ electricity_usage
    :caption: Contents:
 
    Introduction <intro>
-   Usage <usage>
    Click CLI <click>
+   Usage <usage>
    API use <api>
    Licensing <license>
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

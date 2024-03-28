@@ -9,7 +9,7 @@ from electricity_usage import daemon
 # the start command creates a daemon instance and starts its run method as a daemon process
 
 @click.command()
-@click.option('--area',type=click.Choice(codes), default='DE', help="area code corresponding to the local area as shown by 'electricity_usage areas'. The default value for this is 'DE corresponding to Germany")
+@click.option('--area',type=click.Choice(codes), default='DE', help="area code corresponding to the local area as shown by 'electricity_usage areas'. The default value for this is 'DE' corresponding to Germany")
 
 def start(area):
     '''starts the tool background process (demon)'''

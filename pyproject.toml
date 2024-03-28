@@ -13,10 +13,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "electricity_usage"
 version = "0.1.0"
-description = "Add short description here"
+description = "The electricity_usage package provides a scheduler which will kick off processes only when there is a surplus in local energy production. \nFor more information see the usage documentation."
 readme = "README.md"
 maintainers = [
-    { name = "Your Name", email = "your@email.com" },
+    { name = "Tim", email = "" },
+    { name = "Nemo", email = "nemo24751@gmail.com" },
 ]
 requires-python = ">=3.8"
 license = { text = "MIT" }
@@ -45,6 +46,7 @@ docs = [
     "sphinx",
     "sphinx_mdinclude",
     "sphinx_rtd_theme",
+    "sphinx_click",
 ]
 
 # Command line scripts installed as part of the installation
@@ -64,5 +66,4 @@ packages = [
 [tool.pytest.ini_options]
 testpaths = [
     "tests",
-    "notebooks",
 ]
