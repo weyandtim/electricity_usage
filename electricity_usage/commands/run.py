@@ -27,7 +27,7 @@ def validate_estimate(ctx, param, estimate):
 
 @click.command()
 @click.option('--estimate', type=str,required=True, callback=validate_estimate,
-        help='estimated runtime of the program in any format as accepted by the pytimeparse package. For more information on the formatting, see https://github.com/wroberts/pytimeparse.'
+        help='estimated runtime of the program in any format as accepted by the pytimeparse package. For more information on the formatting, see https://pypi.org/project/pyytimeparse/.'
         )
 @click.option('--deadline', type=click.DateTime(formats=['%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S']), help='latest date when the program should be finished', required=True)
 @click.option('--commandline', type=str, help='the command line to be executed', required=True)

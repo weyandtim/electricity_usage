@@ -14,7 +14,7 @@ Subcommands
 
 .. click:: electricity_usage.commands.start:start
     :prog: start
-    :nested: full
+    :nested: none
 
 The options for :option:`--area` correspond to the area codes used by the Electricity Maps API.
 
@@ -22,7 +22,9 @@ The options for :option:`--area` correspond to the area codes used by the Electr
     :prog: run
     :nested: full
 
-:option:`--estimate` accepts an ``int``
+:option:`--estimate` accepts a ``string`` formatted as accepted by `pytimeparse`_.
+
+.. _pytimeparse: https://pypi.org/project/pytimeparse/
 
 :option:`--deadline` accepts dates and timestamps in the following formats: '%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S' 
 
@@ -32,8 +34,8 @@ The options for :option:`--area` correspond to the area codes used by the Electr
     :prog: stop
     :nested: full
 
-.. click:: electricity_usage.commands.status:status
-    :prog: status
+.. click:: electricity_usage.commands.queue:queue
+    :prog: queue
     :nested: full
 
 .. click:: electricity_usage.commands.areas:areas
