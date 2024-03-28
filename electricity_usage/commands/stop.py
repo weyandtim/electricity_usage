@@ -20,7 +20,7 @@ def generate_stop_token_filename():
 
 @click.command()
 def stop():
-    '''stops the tool demon and abandons all processes'''
+    '''stops the tool demon and abandons all jobs'''
     filename = generate_stop_token_filename()  # generate filename
     file_path = os.path.join(input_data_dir, filename)  # create path to file in input_data_dir
 
