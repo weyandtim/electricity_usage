@@ -1,3 +1,4 @@
+import click
 areas_str = [
 "AD  =  Andorra",
 "AE  =  United Arab Emirates",
@@ -397,3 +398,15 @@ areas_str = [
 "ZM  =  Zambia",
 "ZW  =  Zimbabwe",
 ]
+
+# build list of codes to choose from
+codes = []
+for a in areas_str:
+    codes.append(a.split()[0])
+
+def validate_code(ctx, param, area):
+    if (area in codes) or (area==None):
+        return area
+    raise click.BadParameter("Area Code must be in the list of provided codes, not {area}")
+
+
