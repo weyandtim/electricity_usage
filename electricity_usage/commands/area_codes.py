@@ -407,6 +407,6 @@ for a in areas_str:
 def validate_code(ctx, param, area):
     if (area in codes) or (area==None):
         return area
-    raise click.BadParameter("Area Code must be in the list of provided codes, not {area}")
+    raise click.BadParameter(f"Area Code must be in the list of provided codes, not {area}")
 
 
