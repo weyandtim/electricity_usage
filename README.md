@@ -5,6 +5,10 @@
 [![Documentation Status](https://readthedocs.org/projects/electricity_usage/badge/)](https://electricity_usage.readthedocs.io/)
 [![codecov](https://codecov.io/gh/weyandtim/electricity_usage/branch/main/graph/badge.svg)](https://codecov.io/gh/weyandtim/electricity_usage)
 
+
+The electricity\_usage package provides a scheduler which will kick off processes only when there is a surplus in local energy production.  
+For more information see the [usage](usage.html) documentation.
+
 ## Installation
 
 The Python package `electricity_usage` can be installed by cloning the git repository and installing it using pip install.
@@ -34,14 +38,6 @@ Having done so, the test suite can be run using `pytest`:
 ```
 python -m pytest
 ```
-
-
-## Usage
-
-The electricity\_usage package provides a scheduler which will kick off processes only when there is a surplus in local energy production.  
-For more information see the usage documentation.
-<!-- usage should be linked properly here, if possible -->
-
 
 ## Contributing
 
