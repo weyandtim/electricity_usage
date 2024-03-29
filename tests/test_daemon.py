@@ -18,7 +18,7 @@ def test_create_daemon_instance(daemon_instance):
 
 
 
-### testting process_json_file ###
+### testing process_json_file ###
 
 def test_process_json_file_with_valid_data(daemon_instance):
     # Test with valid JSON data
