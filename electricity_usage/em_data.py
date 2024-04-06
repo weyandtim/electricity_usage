@@ -17,4 +17,5 @@ def get_power_data(zone, API_KEY):
         return power_production_total, power_consumption_total
     else:
         print(f"Error: {response.status_code}")
+        print("Electricity Maps isn't responding. Please check your authentication token.")
         return None, None

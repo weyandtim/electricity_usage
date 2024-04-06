@@ -1,4 +1,5 @@
 # Welcome to electricity_usage
+The electricity_usage package provides a scheduler which will kick off processes only when there is a surplus in local energy production. :ref:`usage-ref`.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/weyandtim/electricity_usage/ci.yml?branch=main)](https://github.com/weyandtim/electricity_usage/actions/workflows/ci.yml)
@@ -13,7 +14,11 @@ The Python package `electricity_usage` can be installed by cloning the git repos
 git clone https://github.com/weyandtim/electricity_usage
 pip install electricity_usage
 ```
-For the full use of this package you will also need a subscription to Electricity Maps. Instructions on how to get and use the token you need can be found in :ref:`api-ref`.
+To fully utilize this package, you also need a subscription to Electricity Maps, available here `<https://api-portal.electricitymaps.com/>`.  
+Upon subscription, you'll receive an authentication token. This token is used to access additional electricity production and consumption data for specific locations from Electricity Maps.  
+We incorporate the token using an optional parameter `--em_auth_token`, in our `start` command.  
+Please note that the majority of locations do not require an authentication token.  
+More information about Electricity Maps can be found in :ref:`api-ref`.
 
 <!-- @Tim kann sein dass das nicht reicht, deine Entscheidung -->
 
@@ -34,13 +39,6 @@ Having done so, the test suite can be run using `pytest`:
 ```
 python -m pytest
 ```
-
-
-## Usage
-
-The electricity\_usage package provides a scheduler which will kick off processes only when there is a surplus in local energy production.  
-For more information see the usage documentation.
-<!-- usage should be linked properly here, if possible -->
 
 
 ## Contributing

@@ -18,6 +18,8 @@ Subcommands
 
 The options for :option:`--area` correspond to the area codes used by the Electricity Maps API.
 
+:option:`--em_auth_token` accepts your Electricity Maps auth token as a ``string`` 
+
 .. click:: electricity_usage.commands.run:run
     :prog: run
     :nested: full

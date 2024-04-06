@@ -3,6 +3,7 @@ import threading
 import os
 import subprocess
 import datetime
+import shutil
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from electricity_usage import job
@@ -83,21 +84,8 @@ class Daemon:
         try:
             # Check if the folder exists
             if os.path.exists(self.input_dir):
-                # List all files in the folder
-                files = os.listdir(self.input_dir)
-                for file_name in files:
-                    # Create file path
-                    file_path = os.path.join(self.input_dir, file_name)
-                    # Check if the item is a regular file
-                    if os.path.isfile(file_path):
-                        # Delete file
-                        os.remove(file_path)
+                shutil.rmtree(self.input_dir) #deletes the directory and all its contents recursively
                 print("All files in the folder have been deleted successfully.")
-                input_dirs_dir = os.path.dirname(self.input_dir)
-                parent = os.path.dirname(input_dirs_dir)
-                os.rmdir(self.input_dir)
-                os.rmdir(input_dirs_dir)
-                os.rmdir(parent)
                 
             else:
                 print(f"The folder {self.input_dir} does not exist.")

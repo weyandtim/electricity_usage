@@ -1,11 +1,11 @@
 .. _api-ref:
 
-Introduction to Electricity Maps:
+Introduction to Electricity Maps
 =================================
 Electricity Maps is a realtime Data API about electricity consumption, production and carbon intensity
 
 
-How we use Electricity Maps:
+How we use Electricity Maps
 ----------------------------
 electricity_usage utilizes the Electricity Maps API to retrieve location-specific data
 on electricity production and consumption, 
@@ -13,9 +13,13 @@ based on which our scheduler determines when to execute jobs.
 
 In order to use electricity_usage properly you are required to 
 get the personal free tier subscription of Electricity Maps
-which can be obtained here `<https://api-portal.electricitymaps.com/>`_
+which can be obtained here `<https://api-portal.electricitymaps.com/>`_.  
+Upon subscription, you'll receive an authentication token.
+This token grants access to additional electricity production and consumption data
+for specific locations from Electricity Maps.
+We integrate this token using an optional parameter ``--em_auth_token``, 
+in our ``start`` command.
 
-For more informaion on how to set up electricity_usage view installation.
 
 
 How does Electricity Maps work:

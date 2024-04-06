@@ -31,11 +31,13 @@ dependencies = [
     "watchdog",
     "requests",
     "platformdirs",
+    "pytimeparse",
 ]
 
 [project.optional-dependencies]
 tests = [
     "pytest",
+    "mock",
     "pytest-cov",
     "nbval",
 ]
