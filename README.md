@@ -1,10 +1,12 @@
 # Welcome to electricity_usage
-The electricity_usage package provides a scheduler which will kick off processes only when there is a surplus in local energy production. :ref:`usage-ref`.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/weyandtim/electricity_usage/ci.yml?branch=main)](https://github.com/weyandtim/electricity_usage/actions/workflows/ci.yml)
 [![Documentation Status](https://readthedocs.org/projects/electricity_usage/badge/)](https://electricity_usage.readthedocs.io/)
 [![codecov](https://codecov.io/gh/weyandtim/electricity_usage/branch/main/graph/badge.svg)](https://codecov.io/gh/weyandtim/electricity_usage)
+
+The electricity_usage package provides a scheduler which will kick off processes only when there is a surplus in local energy production.
+For more information see the [usage](usage.html) documentation.
 
 ## Installation
 
