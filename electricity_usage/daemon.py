@@ -3,6 +3,7 @@ import threading
 import os
 import subprocess
 import datetime
+import pytimeparse
 import shutil
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -57,10 +58,8 @@ class Daemon:
             # Execute command line to meet the deadline
             with self.lock:
                 for job_instance in self.jobs:  
-                    # Calculate the deadline - estimate
-                    latest_starting_point = job_instance.deadline - datetime.timedelta(hours=job_instance.estimate)
                     # Check if latest_starting_point is less than or equal to the current time
-                    if latest_starting_point <= datetime.datetime.now():
+                    if job_instance.latest_starting_point <= datetime.datetime.now():
                         commandline = job_instance.commandline
                         job_id = job_instance.job_id
                         print(f"Executing commandline for Job {job_id}: {commandline}")
@@ -102,17 +101,20 @@ class Daemon:
                 params = json.load(file)
         
             # Read parameters
-            estimate = float(params.get('estimate'))
+            #estimate = float(params.get('estimate'))
+            estimate = params.get('estimate') 
             deadline = datetime.datetime.strptime(params.get('deadline'), "%Y-%m-%d %H:%M:%S")
             commandline = params.get('commandline')
 
             if estimate and deadline and commandline:
                 with self.lock:
+                    latest_starting_point = deadline - datetime.timedelta(seconds=pytimeparse.parse(estimate))
+
                     # Increment job_id before use to ensure it's consecutive
                     job_id = self.next_job_id
                     self.next_job_id = self.next_job_id+1
                     new_job=f"job{job_id}" # Jobs are named as follows: job1, job2, ...
-                    new_job = job.Job(job_id, estimate, deadline, commandline)
+                    new_job = job.Job(job_id, estimate, deadline, latest_starting_point, commandline)
                     self.jobs.append(new_job) # Add the job to the jobs list
                     print(f"Job {job_id} added.")
                     
