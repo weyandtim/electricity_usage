@@ -27,7 +27,7 @@ def validate_estimate(ctx, param, estimate):
 
 @click.command()
 @click.option('--estimate', type=str,required=True, callback=validate_estimate,
-        help='estimated runtime of the program in any format as accepted by the pytimeparse package. For more information on the formatting, see https://github.com/wroberts/pytimeparse.'
+        help='estimated runtime of the program in any format as accepted by the pytimeparse package. For more information on the formatting, see https://pypi.org/project/pyytimeparse/.'
         )
 @click.option('--deadline', default=default_deadline,
         type=click.DateTime(formats=['%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S']), 
@@ -37,8 +37,8 @@ def validate_estimate(ctx, param, estimate):
 
 def run(estimate,deadline,commandline): 
     '''adds a process to the queue. this can only be done after electricity usage has been started'''
-    if deadline.time() == datetime.min.time():  # Wenn die Uhrzeit nicht im Parameter enthalten ist
-        deadline = deadline.replace(hour=0, minute=0, second=0)  # Setze die Uhrzeit auf 00:00:00
+    if deadline.time() == datetime.min.time():  # In case the deadline is just a date without a specific time set
+        deadline = deadline.replace(hour=0, minute=0, second=0)  # Set time as 00:00:00
     
     deadline_str = deadline.strftime("%Y-%m-%d %H:%M:%S")
     data = {
