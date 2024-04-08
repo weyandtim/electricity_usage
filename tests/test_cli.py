@@ -38,6 +38,7 @@ def test_status_invalid_area(runner):
     assert result.exit_code == 2
 
 def test_status_valid_area(runner, mock_em_data):
+    with patch('electricity_usage.em_data.get_power_data') as mock_em_data
     result = runner.invoke(cli, ['status','--area', 'DE'])
     assert result.exit_code == 0
     assert "Electricity Maps" in result.output
