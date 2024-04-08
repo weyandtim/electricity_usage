@@ -11,6 +11,7 @@ electricity_usage
    Click CLI <click>
    Usage <usage>
    About Electricity Maps <api>
+   System Architecture and Backend Functionality <code>
    Licensing <license>
 
 
