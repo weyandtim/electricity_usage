@@ -37,7 +37,7 @@ By creating a daemon instance, a watchdog observer is created to monitor the spe
 which serves as a communication pathway between the CLI and daemon. 
 Watchdog is a Python package used to monitor changes to a directory, 
 functioning cross-platform. 
-Learn more about watchdog at `https://python-watchdog.readthedocs.io/en/stable/`.
+Learn more about watchdog at `<https://python-watchdog.readthedocs.io/en/stable/>`_.
 
 Daemon Methods
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -82,11 +82,11 @@ Communication between the CLI and daemon occurs via the file system.
 We utilize `platformdirs` to access an independent folder. 
 The structure of our communication folder is created in `data_dirs.py`. 
 For more information about `platformdirs`, 
-refer to the `https://platformdirs.readthedocs.io/en/latest/`.
+refer to the `<https://platformdirs.readthedocs.io/en/latest/>`_.
 
 The CLI commands `run` and `stop` add files to the `input_dir` directory, 
 which are then registered by the daemon using the Watchdog Observer. 
 Watchdog is a Python package used to monitor changes to a directory, 
 functioning cross-platform. 
-Learn more about watchdog at `https://python-watchdog.readthedocs.io/en/stable/`.
+Learn more about watchdog at `<https://python-watchdog.readthedocs.io/en/stable/>`_.
 After a file is registered, corresponding daemon methods are invoked.
