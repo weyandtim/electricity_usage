@@ -24,7 +24,7 @@ def test_process_json_file_with_valid_data(daemon_instance):
     # Test with valid JSON data
     file_path = 'valid_data.json'
     data = {
-        'estimate': 2.0,
+        'estimate': '2:00',
         'deadline': '2024-03-05 12:00:00',
         'commandline': 'python script.py'
     }
@@ -58,7 +58,7 @@ def test_run_production_greater_consumption(daemon_instance, mock_em_data):
     mock_em_data.return_value = (100, 50) # Mock power production and consumption data
 
     # Add a job with a commandline
-    job = Job(job_id=1, estimate=1.0, deadline=datetime.datetime.now() + datetime.timedelta(hours=2), commandline='echo command executed')
+    job = Job(job_id=1, estimate='0:30', deadline=datetime.datetime.now() + datetime.timedelta(hours=2), latest_starting_point=datetime.datetime.now() + datetime.timedelta(hours=1), commandline='echo command executed')
     daemon_instance.jobs.append(job)
 
     # Mock subprocess.run
@@ -81,7 +81,7 @@ def test_run_latest_StartingPoint_reached(daemon_instance, mock_em_data):
     mock_em_data.return_value = (50, 100) # Mock power production and consumption data
 
     # Add a job with a commandline
-    job = Job(job_id=1, estimate=3.0, deadline=datetime.datetime.now() + datetime.timedelta(hours=2), commandline='echo command executed')
+    job = Job(job_id=1, estimate='3:00', deadline=datetime.datetime.now() + datetime.timedelta(hours=2), latest_starting_point=datetime.datetime.now() - datetime.timedelta(hours=1), commandline='echo command executed')
     daemon_instance.jobs.append(job)
 
     # Mock subprocess.run
@@ -105,7 +105,7 @@ def test_run_no_conditions_met(daemon_instance, mock_em_data):
     mock_em_data.return_value = (50, 100) # Mock power production and consumption data
 
     # Add a job with a commandline
-    job = Job(job_id=1, estimate=3.0, deadline=datetime.datetime.now() + datetime.timedelta(hours=10), commandline='echo command executed')
+    job = Job(job_id=1, estimate='3:00', deadline=datetime.datetime.now() + datetime.timedelta(hours=10), latest_starting_point=datetime.datetime.now() + datetime.timedelta(hours=7), commandline='echo command executed')
     daemon_instance.jobs.append(job)
 
     # Mock subprocess.run
@@ -144,12 +144,12 @@ def test_stop_removes_txtfiles(daemon_instance):
 def test_stop_remove_jsonfiles(daemon_instance, create_accepted_json_files):
     accepted_data = [
         {
-            'estimate': 2.0,
+            'estimate': '2:00',
             'deadline': '2024-03-05 12:00:00',
             'commandline': 'python script.py'
         },
         {
-            'estimate': 3.0,
+            'estimate': '3:00',
             'deadline': '2024-03-06 12:00:00',
             'commandline': 'python script2.py'
         }
@@ -162,7 +162,7 @@ def test_stop_remove_jsonfiles(daemon_instance, create_accepted_json_files):
             json.dump(data, json_file)
         
     daemon_instance.stop()
-    time.sleep(1)
+    time.sleep(2)
     # Check if input dir and thus all json files were deleted
     assert not os.path.exists(daemon_instance.input_dir)
 
@@ -172,7 +172,7 @@ def test_stop_remove_jsonfiles(daemon_instance, create_accepted_json_files):
 def test_process_json_file_called(daemon_instance):
     # Create a JSON file in the input directory
     json_data = {
-        'estimate': 2.0,
+        'estimate': '2:00',
         'deadline': '2024-03-05 12:00:00',
         'commandline': 'python script.py'
     }
@@ -182,7 +182,7 @@ def test_process_json_file_called(daemon_instance):
     time.sleep(1)
     # Check if the process_json_file method was called
     assert len(daemon_instance.jobs) == 1
-    assert daemon_instance.jobs[0].estimate == 2.0
+    assert daemon_instance.jobs[0].estimate == '2:00'
     assert daemon_instance.jobs[0].deadline == datetime.datetime(2024, 3, 5, 12, 0, 0)
     assert daemon_instance.jobs[0].commandline == 'python script.py'
 
