@@ -14,7 +14,7 @@ Subcommands
 
 .. click:: electricity_usage.commands.start:start
     :prog: start
-    :nested: none
+    :nested: short
 
 The options for :option:`--area` correspond to the area codes used by the Electricity Maps API.
 
@@ -36,8 +36,8 @@ The options for :option:`--area` correspond to the area codes used by the Electr
     :prog: stop
     :nested: full
 
-.. click:: electricity_usage.commands.queue:queue
-    :prog: queue
+.. click:: electricity_usage.commands.status:status
+    :prog: status
     :nested: full
 
 .. click:: electricity_usage.commands.areas:areas

@@ -56,3 +56,7 @@ def create_accepted_json_files(daemon_instance):
         file_path = os.path.join(daemon_instance.input_dir, f'accepted_data_{i}.json')
         with open(file_path, 'w') as json_file:
             json.dump(data, json_file)
+
+@pytest.fixture
+def mock_create_input_dir_path():
+    yield data_dirs.get_input_dir_path()

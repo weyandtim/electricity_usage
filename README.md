@@ -13,7 +13,6 @@ For more information see the [usage](usage.html) documentation.
 The Python package `electricity_usage` can be installed by cloning the git repository and installing it using pip install.
 
 ```
-git clone https://github.com/weyandtim/electricity_usage
 pip install electricity_usage
 ```
 To fully utilize this package, you also need a subscription to Electricity Maps, available here `<https://api-portal.electricitymaps.com/>`.  
