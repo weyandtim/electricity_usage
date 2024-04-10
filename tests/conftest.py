@@ -65,5 +65,3 @@ def mock_create_input_dir_path():
 @pytest.fixture
 def runner():
     return CliRunner()
-
-

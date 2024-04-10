@@ -14,15 +14,19 @@ Subcommands
 
 .. click:: electricity_usage.commands.start:start
     :prog: start
-    :nested: full
+    :nested: short
 
 The options for :option:`--area` correspond to the area codes used by the Electricity Maps API.
+
+:option:`--em_auth_token` accepts your Electricity Maps auth token as a ``string`` 
 
 .. click:: electricity_usage.commands.run:run
     :prog: run
     :nested: full
 
-:option:`--estimate` accepts an ``int``
+:option:`--estimate` accepts a ``string`` formatted as accepted by `pytimeparse`_.
+
+.. _pytimeparse: https://pypi.org/project/pytimeparse/
 
 :option:`--deadline` accepts dates and timestamps in the following formats: '%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M:%S' 
 
