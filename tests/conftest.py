@@ -4,6 +4,7 @@ import os
 import platformdirs
 from unittest.mock import MagicMock
 from unittest.mock import patch
+from click.testing import CliRunner
 from electricity_usage import data_dirs
 
 @pytest.fixture
@@ -60,3 +61,7 @@ def create_accepted_json_files(daemon_instance):
 @pytest.fixture
 def mock_create_input_dir_path():
     yield data_dirs.get_input_dir_path()
+
+@pytest.fixture
+def runner():
+    return CliRunner()

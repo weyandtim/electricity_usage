@@ -25,6 +25,6 @@ def status(area):
             print("Your connection to Electricity Maps is working and the current data is as follows:")
             print("Power Production:", prod, "\nPower Consuption:", con, "\nDifference:", prod-con)
         else:
-            raise Exception("Something went wrong with your connection to Electricity Maps. Please check your API key.")
+            print("Something went wrong with your connection to Electricity Maps. Please check your API key.")
 
     
